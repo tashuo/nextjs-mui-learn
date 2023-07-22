@@ -30,7 +30,7 @@ export default function Layout({ children, title }: ILayoutProps) {
         {title && <title>{title}</title>}
       </Head>
       <PrimarySearchAppBar />
-      <div className="min-h-screen flex flex-col justify-between my-14">
+      <div className="min-h-screen flex flex-col">
         {children}
       </div>
       <SimpleBottomNavigation />

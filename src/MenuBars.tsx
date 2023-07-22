@@ -31,7 +31,7 @@ export default function PrimarySearchAppBar() {
         socket.emit('heartbeat', {
             live: true
         });
-      }, 10000) : null;
+      }, 60000) : null;
       return () => {
         socket?.disconnect();
         heartbeatInterval && window.clearInterval(heartbeatInterval);

@@ -10,7 +10,22 @@ export async function login(username: string, password: string) {
     return response.data;
 }
 
-export async function getProfile() {
-    const response = await commonRequest.get('/user/profile');
+export async function getProfile(userId?: string) {
+    const response = await commonRequest.get(`/user/profile${userId ? `/${userId}` : ''}`);
+    return response.data;
+}
+
+export async function getAllUserids() {
+    const response = await commonRequest.get('/user/all');
+    return response.data;
+}
+
+export async function follow(userId: number) {
+    const response = await commonRequest.post('/user/follow', { userId });
+    return response.data;
+}
+
+export async function unfollow(userId: number) {
+    const response = await commonRequest.post('/user/unfollow', { userId });
     return response.data;
 }

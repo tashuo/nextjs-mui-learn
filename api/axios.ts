@@ -8,7 +8,6 @@ export const commonRequest = Axios.create({
 
 commonRequest.interceptors.request.use(
   config => {
-    console.log(process.env);
     if (isBrowser()) {
       const token = localStorage.getItem('bearerToken');
       if (token) {
@@ -26,9 +25,9 @@ commonRequest.interceptors.request.use(
 commonRequest.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-  if (isBrowser()) {
+  // if (isBrowser()) {
     console.log(`axios response failed: ${error}`);
     console.log(error);
-  }
+  // }
   return Promise.reject(error);
 });

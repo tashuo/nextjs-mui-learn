@@ -4,20 +4,10 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import StandardImageList from './ImageList';
 import { CardList } from './Card';
-import { Container, Pagination, Stack } from '@mui/material';
+import { Pagination, Stack } from '@mui/material';
 import { getFeeds, getRecommends } from '../api/post';
-
-interface PaginationData {
-  items: [],
-  meta: {
-    total?: number,
-    totalPages: number,
-    limit?: number,
-    nextPage?: number,
-  }
-}
+import { PaginationData } from '../lib/types';
 
 export default function ProfileTabs() {
   const [value, setValue] = React.useState('post');

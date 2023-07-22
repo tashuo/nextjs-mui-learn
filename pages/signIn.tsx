@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../src/Copyright';
 import { useRouter } from 'next/router';
 import { login, getProfile } from '../api/user';
+import { setCookie } from 'cookies-next';
 
 const theme = createTheme();
 export default function SignIn() {
@@ -33,6 +34,8 @@ export default function SignIn() {
         const profile = await getProfile();
         localStorage.setItem('nickname', profile.data.nickname ?? profile.data.username);
         localStorage.setItem('avatar', profile.data.avatar);
+        localStorage.setItem('userId', profile.data.id);
+        setCookie('token', token);
         const redirectUrl = router.query.redirectUrl ?? '/';
         router.push(redirectUrl as string);
     } catch (error) {

@@ -8,16 +8,9 @@ import StandardImageList from './ImageList';
 import { CardList } from './Card';
 import { Pagination, Stack } from '@mui/material';
 import { getFeeds, getRecommends } from '../api/post';
-
-interface PaginationData {
-  items: [],
-  meta: {
-    total?: number,
-    totalPages: number,
-    limit?: number,
-    nextPage?: number,
-  }
-}
+import { isLogin } from '../lib/helper';
+import { useRouter } from 'next/router';
+import { PaginationData } from '../lib/types';
 
 export default function LabTabs() {
   const [value, setValue] = React.useState('recommend');
@@ -35,14 +28,16 @@ export default function LabTabs() {
   });
   const [followPage, setFollowPage] = React.useState(1);
   const [recommendPage, setRecommendPage] = React.useState(1);
+  const router = useRouter();
 
   React.useEffect(() => {
     const fetchData = async () => {
-        const response = value === 'recommend' ? await getRecommends(recommendPage) : await getFeeds(followPage);
         if (value === 'recommend') {
-            setRecommendData(response.data);
+            setRecommendData((await getRecommends(recommendPage)).data);
+        } else if (isLogin()) {
+            setFollowingData((await getFeeds(followPage)).data);
         } else {
-            setFollowingData(response.data);
+            router.push(`/signIn?redirectUrl=${encodeURIComponent('/')}`);
         }
     };
     fetchData();
@@ -70,10 +65,15 @@ export default function LabTabs() {
           </TabList>
         </Box>
         <TabPanel value="following">
-            <StandardImageList />
+            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" justifyContent="space-evenly">
+                <CardList items={followingData.items} />
+            </Stack>
+            <Stack spacing={{ xs: 1, sm: 2 }} marginTop="30px" alignItems="center">
+              <Pagination size='large' count={followingData.meta?.totalPages} onChange={handlePageChange}></Pagination>
+            </Stack>
         </TabPanel>
         <TabPanel value="recommend">
-            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
+            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" justifyContent="space-evenly">
                 <CardList items={recommendData.items} />
             </Stack>
             <Stack spacing={{ xs: 1, sm: 2 }} marginTop="30px" alignItems="center">
