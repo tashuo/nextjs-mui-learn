@@ -1,9 +1,9 @@
 import { Avatar, Box } from "@mui/material";
-import { UserProfileData } from "../pages/user/[userId]";
 import { getItemFromLocalStorage, isLogin } from "../lib/helper";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { unfollow, follow } from "../api/user";
+import { UserProfileData } from "../lib/types";
 
 export default function Profile({ userProfile }: { userProfile: UserProfileData }) {
     const [isFollowing, setIsFollowing] = useState(userProfile.interactionInfo.isFollowing);

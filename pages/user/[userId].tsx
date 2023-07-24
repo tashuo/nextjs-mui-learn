@@ -3,27 +3,13 @@ import Layout from "../../src/Layout";
 import Profile from "../../src/Profile";
 import ProfileTabs from "../../src/ProfileTab";
 import { getAllUserids, getProfile } from "../../api/user";
-
-export interface UserProfileData {
-    id: number;
-    username: string;
-    avatar: string;
-    description: string;
-    gender: string;
-    interactionInfo: {
-        isFollowing: boolean;
-        followingCount: number;
-        followerCount: number;
-        receivedLikeCount: number;
-        receivedCollectCount: number;
-    }
-}
+import { UserProfileData } from "../../lib/types";
 
 export default function UserProfile({ userProfile }: { userProfile: UserProfileData }) {
     return (
         <Layout>
             <Profile userProfile={userProfile}/>
-            <ProfileTabs />
+            <ProfileTabs userProfile={userProfile}/>
         </Layout>
     );
 }

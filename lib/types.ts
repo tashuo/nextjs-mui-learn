@@ -28,3 +28,18 @@ export type PaginationData = {
       page?: number,
     }
 }
+
+export type UserProfileData = {
+    id: number;
+    username: string;
+    avatar: string;
+    description: string;
+    gender: string;
+    interactionInfo: {
+        isFollowing: boolean;
+        followingCount: number;
+        followerCount: number;
+        receivedLikeCount: number;
+        receivedCollectCount: number;
+    }
+}

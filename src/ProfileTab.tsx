@@ -6,47 +6,71 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { CardList } from './Card';
 import { Pagination, Stack } from '@mui/material';
-import { getFeeds, getRecommends } from '../api/post';
-import { PaginationData } from '../lib/types';
+import { getCollectPosts, getLikePosts, getPosts } from '../api/post';
+import { PaginationData, UserProfileData } from '../lib/types';
 
-export default function ProfileTabs() {
+export default function ProfileTabs({ userProfile }: { userProfile: UserProfileData }) {
   const [value, setValue] = React.useState('post');
-  const [followingData, setFollowingData] = React.useState<PaginationData>({
+  const [userPosts, setUserPosts] = React.useState<PaginationData>({
     items: [],
     meta: {
       totalPages: 10,
     }
   });
-  const [recommendData, setRecommendData] = React.useState<PaginationData>({
+  const [likePosts, setLikePosts] = React.useState<PaginationData>({
     items: [],
     meta: {
       totalPages: 10,
     }
   });
-  const [followPage, setFollowPage] = React.useState(1);
-  const [recommendPage, setRecommendPage] = React.useState(1);
+  const [collectPosts, setCollectPosts] = React.useState<PaginationData>({
+    items: [],
+    meta: {
+      totalPages: 10,
+    }
+  });
+  const [userPage, setUserPage] = React.useState(1);
+  const [likePage, setLikePage] = React.useState(1);
+  const [collectPage, setCollectPage] = React.useState(1);
 
   React.useEffect(() => {
     const fetchData = async () => {
-        const response = value === 'recommend' ? await getRecommends(recommendPage) : await getFeeds(followPage);
-        if (value === 'recommend') {
-            setRecommendData(response.data);
-        } else {
-            setFollowingData(response.data);
+        let response = null;
+        switch (value) {
+          case 'like':
+            response = await getLikePosts(userProfile.id, likePage);
+            setLikePosts(response.data);
+            break;
+          case 'collect':
+            response = await getCollectPosts(userProfile.id, 0, collectPage);
+            setCollectPosts(response.data);
+            break;
+          case 'post':
+          default:
+            response = await getPosts(userProfile.id, userPage);
+            setUserPosts(response.data);
+            break;
         }
     };
-    // fetchData();
-  }, [value, followPage, recommendPage]);
+    fetchData();
+  }, [value, userPage, likePage, collectPage]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
   const handlePageChange = (event: any, newPage: number) => {
-    if (value === 'recommend') {
-      setRecommendPage(newPage);
-    } else {
-      setFollowPage(newPage);
+    switch (value) {
+      case 'like':
+        setLikePage(newPage);
+        break;
+      case 'collect':
+        setCollectPage(newPage);
+        break;
+      case 'post':
+      default:
+        setUserPage(newPage)
+        break;
     }
   }
 
@@ -60,19 +84,29 @@ export default function ProfileTabs() {
             <Tab label="点赞" value="like" />
           </TabList>
         </Box>
-        <TabPanel value="帖子">
-            <CardList items={recommendData.items} />
-        </TabPanel>
-        <TabPanel value="收藏">
-            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
-                <CardList items={recommendData.items} />
+        <TabPanel value="post">
+            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" justifyContent="space-evenly">
+                <CardList items={userPosts.items} />
             </Stack>
             <Stack spacing={{ xs: 1, sm: 2 }} marginTop="30px" alignItems="center">
-              <Pagination size='large' count={recommendData.meta?.totalPages} onChange={handlePageChange}></Pagination>
+              <Pagination size='large' count={userPosts.meta.totalPages} onChange={handlePageChange}></Pagination>
             </Stack>
         </TabPanel>
-        <TabPanel value="点赞">
-            <CardList items={recommendData.items} />
+        <TabPanel value="collect">
+            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" justifyContent="space-evenly">
+                <CardList items={collectPosts.items.map((v: any) => v.post)} />
+            </Stack>
+            <Stack spacing={{ xs: 1, sm: 2 }} marginTop="30px" alignItems="center">
+              <Pagination size='large' count={collectPosts.meta.totalPages} onChange={handlePageChange}></Pagination>
+            </Stack>
+        </TabPanel>
+        <TabPanel value="like">
+            <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap" justifyContent="space-evenly">
+                <CardList items={likePosts.items.map((v: any) => v.post)} />
+            </Stack>
+            <Stack spacing={{ xs: 1, sm: 2 }} marginTop="30px" alignItems="center">
+              <Pagination size='large' count={likePosts.meta.totalPages} onChange={handlePageChange}></Pagination>
+            </Stack>
         </TabPanel>
       </TabContext>
     </div>
