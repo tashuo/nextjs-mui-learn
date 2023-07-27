@@ -32,10 +32,13 @@ export default function SignIn() {
         localStorage.setItem('bearerToken', token);
 
         const profile = await getProfile();
+        console.log(profile.data);
         localStorage.setItem('nickname', profile.data.nickname ?? profile.data.username);
-        localStorage.setItem('avatar', profile.data.avatar);
+        localStorage.setItem('avatar', profile.data.avatar_url);
         localStorage.setItem('userId', profile.data.id);
         setCookie('token', token);
+        setCookie('avatar', profile.data.avatar_url);
+        setCookie('userId', profile.data.id);
         const redirectUrl = router.query.redirectUrl ?? '/';
         router.push(redirectUrl as string);
     } catch (error) {

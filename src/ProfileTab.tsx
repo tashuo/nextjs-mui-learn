@@ -7,24 +7,24 @@ import TabPanel from '@mui/lab/TabPanel';
 import { CardList } from './Card';
 import { Pagination, Stack } from '@mui/material';
 import { getCollectPosts, getLikePosts, getPosts } from '../api/post';
-import { PaginationData, UserProfileData } from '../lib/types';
+import { Feed, PaginationData, UserProfileData } from '../lib/types';
 
 export default function ProfileTabs({ userProfile }: { userProfile: UserProfileData }) {
   const [value, setValue] = React.useState('post');
-  const [userPosts, setUserPosts] = React.useState<PaginationData>({
-    items: [],
+  const [userPosts, setUserPosts] = React.useState<PaginationData<Feed>>({
+    items: new Array<Feed>(),
     meta: {
       totalPages: 10,
     }
   });
-  const [likePosts, setLikePosts] = React.useState<PaginationData>({
-    items: [],
+  const [likePosts, setLikePosts] = React.useState<PaginationData<Feed>>({
+    items: new Array<Feed>(),
     meta: {
       totalPages: 10,
     }
   });
-  const [collectPosts, setCollectPosts] = React.useState<PaginationData>({
-    items: [],
+  const [collectPosts, setCollectPosts] = React.useState<PaginationData<Feed>>({
+    items: new Array<Feed>(),
     meta: {
       totalPages: 10,
     }

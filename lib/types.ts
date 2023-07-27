@@ -1,7 +1,7 @@
 export type User = {
     id: number,
     username: string,
-    avatar: string,
+    avatar_url: string,
 }
 
 export type Feed = {
@@ -9,7 +9,7 @@ export type Feed = {
     id: number,
     title: string,
     content: string,
-    images: string[],
+    image_urls: string[],
     publishedAt: Date,
     like_count: number,
     comment_count: number,
@@ -18,8 +18,8 @@ export type Feed = {
     created_at_friendly: string,
 }
 
-export type PaginationData = {
-    items: [],
+export type PaginationData<T> = {
+    items: T[],
     meta: {
       totalPages: number,
       total?: number,
@@ -32,7 +32,7 @@ export type PaginationData = {
 export type UserProfileData = {
     id: number;
     username: string;
-    avatar: string;
+    avatar_url: string;
     description: string;
     gender: string;
     interactionInfo: {
@@ -43,3 +43,15 @@ export type UserProfileData = {
         receivedCollectCount: number;
     }
 }
+
+export type CommentInfo = {
+    id: number;
+    content: string;
+    created_at: Date;
+    user: User;
+    children?: CommentInfo[];
+    parent?: CommentInfo;
+    created_at_friendly?: string;
+}
+
+export type PostInfo = Feed;

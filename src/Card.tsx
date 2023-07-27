@@ -74,33 +74,38 @@ export const FeedCard = ({ props, settingClick }: { props: Feed, settingClick: F
     settingClick(true, postId);
   }
 
+  const handleCardClick = () => {
+    console.log('card click');
+    router.push(`/post/${props.id}`, undefined, { shallow: true });
+  }
+
   return (
-    <Card key={props.id} className='md:w-2/5 w-full'>
+    <Card key={props.id} className='mb-2' onClick={handleCardClick}>
       <CardHeader
-        avatar={props.user.avatar 
-            ? <Avatar aria-label="recipe" alt={props.user.username} src={props.user.avatar} onClick={() => AvatarClick(props.user.id)}></Avatar> 
+        avatar={props.user.avatar_url
+            ? <Avatar aria-label="recipe" alt={props.user.username} src={props.user.avatar_url} onClick={() => AvatarClick(props.user.id)}></Avatar> 
             : <Avatar sx={{ bgcolor: deepOrange[500] }} aria-label="recipe" onClick={() => AvatarClick(props.user.id)}>{props.user.username.substring(props.user.username.length - 2)}</Avatar>
         }
         action={
           <div className='flex'>
             <Typography className='mx-auto my-auto text-xs font-thin'>{props.created_at_friendly}</Typography>
-            <IconButton aria-label="settings">
-              <MoreVertIcon onClick={() => handleShowSetting(props.id)}/>
+            <IconButton aria-label="settings" onClick={() => handleShowSetting(props.id)}>
+              <MoreVertIcon/>
             </IconButton>
           </div>
         }
         title={props.user.username}
         subheader="说"
       />
-      {props.images && <CardMedia
+      {props.image_urls.length > 0 && <CardMedia
         component="img"
-        height="194"
-        image={props.images[0]}
+        image={props.image_urls[0]}
         alt="image"
+        sx={{ height: 250 }}
       />}
       {props.content && <CardContent>
         <Typography variant="body2" color="text.secondary" className='line-clamp-3'>
-          {props.content}
+          {props.id}|{props.content}
         </Typography>
       </CardContent>}
       <CardActions className='text-center'>

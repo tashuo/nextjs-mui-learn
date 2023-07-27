@@ -14,7 +14,7 @@ export default function User({ userProfile }: { userProfile: UserProfileData }) 
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/user/profile`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/user/profile`, {
         headers: {
             Authorization: `Bearer ${context.req.cookies.token}`,
         },

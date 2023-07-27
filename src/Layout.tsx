@@ -24,7 +24,7 @@ function Copyright() {
 
 export default function Layout({ children, title }: ILayoutProps) {
   return (
-    <Container style={{ padding: 0 }} maxWidth={false} className="overflow-hidden">
+    <Container style={{ padding: 0, minWidth: 400 }} maxWidth={false} className="overflow-hidden">
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         {title && <title>{title}</title>}

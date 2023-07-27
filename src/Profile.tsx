@@ -17,20 +17,19 @@ export default function Profile({ userProfile }: { userProfile: UserProfileData 
             return;
         }
         const response = isFollowing ? await unfollow(userProfile.id) : await follow(userProfile.id);
-        console.log(response.data);
         setIsFollowing(!isFollowing);
     }
 
     return (
         <div className="flex flex-col justify-between mt-8 px-5 py-8 mx-auto items-center sm:flex-row sm:mx-14 sm:px-0">
-            <Avatar className="w-1/3 h-full sm:w-1/4" src={userProfile.avatar ? userProfile.avatar : 'https://mui.com/static/images/avatar/4.jpg'} alt="Woman paying for a purchase"/>
+            <Avatar className="w-1/3 h-full sm:w-1/4" src={userProfile.avatar_url ? userProfile.avatar_url : 'https://mui.com/static/images/avatar/4.jpg'} alt="Woman paying for a purchase"/>
             <div className="mt-4 sm:mt-0 sm:ml-10">
                 <div className="flex justify-between">
                     <div className="mt-1">
-                        <p className="text-2xl leading-tight font-semibold text-gray-900">{userProfile.username}</p>
-                        <p className="text-sm font-thin py-1">
+                        <div className="text-2xl leading-tight font-semibold text-gray-900">{userProfile.username}</div>
+                        <div className="text-sm font-thin py-1">
                             id: {userProfile.id}
-                        </p>
+                        </div>
                     </div>
                     { isSelf || (
                         <div className="mt-1 px-2" onClick={handleFollow}>
@@ -46,21 +45,21 @@ export default function Profile({ userProfile }: { userProfile: UserProfileData 
                         </div>
                     )}
                 </div>
-                <p className="mt-1 text-base font-light line-clamp-2">{userProfile.description ? userProfile.description : '暂无介绍'}</p>
-                <p className="text-blue-500 text-sm py-2">{userProfile.gender}</p>
+                <div className="mt-1 text-base font-light line-clamp-2">{userProfile.description ? userProfile.description : '暂无介绍'}</div>
+                <div className="text-blue-500 text-sm py-2">{userProfile.gender}</div>
                 <div className="text-base font-thin flex">
-                    <p>
+                    <div>
                         <span className="font-medium pr-1">{userProfile.interactionInfo.followingCount}</span>
                         <span>关注</span>
-                    </p>
-                    <p className="ml-5">
+                    </div>
+                    <div className="ml-5">
                         <span className="font-medium px-1">{userProfile.interactionInfo.followerCount}</span>
                         <span>粉丝</span>
-                    </p>
-                    <p className="ml-5">
+                    </div>
+                    <div className="ml-5">
                         <span className="font-medium px-1">{userProfile.interactionInfo.receivedLikeCount}</span>
                         <span>获赞</span>
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>

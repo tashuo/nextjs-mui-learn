@@ -23,6 +23,8 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.6.2"
   },
   "devDependencies": {
@@ -30,6 +32,7 @@
     "@types/lodash": "^4.14.195",
     "@types/node": "latest",
     "@types/react": "latest",
+    "@types/react-slick": "^0.23.10",
     "autoprefixer": "^10.4.14",
     "eslint": "latest",
     "eslint-config-next": "latest",

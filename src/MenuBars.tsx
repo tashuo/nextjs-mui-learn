@@ -8,22 +8,22 @@ import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Avatar, Button, Fab, ListItemIcon } from '@mui/material';
+import { Avatar, Button, ListItemIcon } from '@mui/material';
 import Router from 'next/router';
 import Link from 'next/link';
 import { Logout, Settings } from '@mui/icons-material';
-import ScrollTop from './ScrollTop';
 import HideOnScroll from './HideOnScroll';
 import SearchBar from './Search';
 import { wsConnect } from '../lib/websocket';
+import { isBrowser } from '../lib/helper';
 
 export default function PrimarySearchAppBar() {
   const signInUrl = `/signIn?redirectUrl=${encodeURIComponent('/')}`
-  const [avatar, setAvatar] = React.useState('');
+  const avatar = isBrowser() ? localStorage.getItem('avatar') : '';
+  
+  console.log(avatar);
+
   React.useEffect(() => {
-      const avatar = localStorage.getItem('avatar');
-      setAvatar(avatar as string);
       const socket = wsConnect();
       // 心跳
       const heartbeatInterval = socket ? setInterval(() => {
@@ -66,6 +66,7 @@ export default function PrimarySearchAppBar() {
     localStorage.removeItem('bearerToken');
     localStorage.removeItem('avatar');
     localStorage.removeItem('nickname');
+    localStorage.removeItem('userid');
     Router.reload();
   };
 
@@ -135,65 +136,60 @@ export default function PrimarySearchAppBar() {
 
   return (
     <>
-    <Box sx={{ flexGrow: 1 }}>
-      <HideOnScroll>
-        <AppBar position="fixed" color="inherit" className='shadow-none'>
-          <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            Community
-          </Typography>
-          <SearchBar placeholder='Search something...' />
-          <Box sx={{ flexGrow: 1 }} />
-          {avatar ? (<div><Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+      <Box sx={{ flexGrow: 1 }}>
+        {/* <HideOnScroll> */}
+          <AppBar position="fixed" color="inherit" className='shadow-none'>
+            <Toolbar>
             <IconButton
               size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              edge="start"
               color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
             >
-              <Avatar alt="Remy Sharp" src={avatar as string} />
+              <MenuIcon />
             </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' } }}
             >
-              <Avatar alt="Remy Sharp" src={avatar as string} />
-            </IconButton>
-          </Box></div>) : (<div><Button component={Link} color="inherit" href={signInUrl}>Login</Button></div>)}
-          </Toolbar>
-        </AppBar>
-      </HideOnScroll>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
-    <ScrollTop>
-      <Fab size="small" aria-label="scroll back to top">
-        <KeyboardArrowUpIcon />
-      </Fab>
-    </ScrollTop>
+              Community
+            </Typography>
+            <SearchBar placeholder='Search something...' />
+            <Box sx={{ flexGrow: 1 }} />
+            {avatar ? (<div><Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <Avatar alt="Remy Sharp" src={avatar as string} />
+              </IconButton>
+            </Box>
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <Avatar alt="Remy Sharp" src={avatar as string} />
+              </IconButton>
+            </Box></div>) : (<div><Button component={Link} color="inherit" href={signInUrl}>Login</Button></div>)}
+            </Toolbar>
+          </AppBar>
+        {/* </HideOnScroll> */}
+        {renderMobileMenu}
+        {renderMenu}
+      </Box>
     </>
   );
 }
