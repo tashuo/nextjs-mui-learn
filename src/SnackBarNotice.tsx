@@ -6,7 +6,7 @@ export default function SnackBarNotice({currentState, currentMessage, currentPos
     const [open, setOpen] = React.useState(currentState);
     const [message, setMessage] = React.useState(currentMessage);
     const [postId, setPostId] = React.useState(currentPostId);
-    console.log(`currentPostid: ${postId}`);
+    // console.log(`currentPostid: ${postId}`);
 
     React.useEffect(() => {
         console.log(`snackbar currentState: ${currentState}, ${currentMessage}, ${currentPostId}`);

@@ -14,12 +14,16 @@ export default function ProfileTabs({ userProfile }: { userProfile: UserProfileD
   const [userPosts, setUserPosts] = React.useState<PaginationData<Feed>>({
     items: new Array<Feed>(),
     meta: {
+      limit: 12,
+      nextPage: 2,
       totalPages: 10,
     }
   });
   const [likePosts, setLikePosts] = React.useState<PaginationData<Feed>>({
     items: new Array<Feed>(),
     meta: {
+      limit: 12,
+      nextPage: 2,
       totalPages: 10,
     }
   });

@@ -20,7 +20,9 @@ export default function PostDetail({ post }: { post: PostInfo }) {
     const [comments, setComments] = React.useState<PaginationData<CommentInfo>>({
         items: new Array<CommentInfo>(),
         meta: {
-          totalPages: 10,
+            limit: 12,
+            nextPage: 2,
+            totalPages: 10,
         }
     });
     const [commentPage, setCommentPage] = React.useState(1);
@@ -161,7 +163,7 @@ export default function PostDetail({ post }: { post: PostInfo }) {
         <Container sx={{ mt: 8, width: '100%', backgroundColor: '#eee', alignContent: 'center' }}>
             <Slider {...settings}>
                 {post.image_urls.map((v: string, k) => (
-                    <div className="w-full">
+                    <div key={k} className="w-full">
                         <img
                           key={k}
                           src={v}
@@ -224,7 +226,7 @@ export default function PostDetail({ post }: { post: PostInfo }) {
                 </Typography>
             </Box>
             {
-                comments.items.length > 0 && (
+                comments.items.length > 0 ? (
                     <Box sx={{ mt: 1, mb: 20, width: '100%', position: 'relative', px: 4.5 }}>
                         <Box>
                             { 
@@ -239,7 +241,7 @@ export default function PostDetail({ post }: { post: PostInfo }) {
                           <Pagination size='medium' count={comments.meta?.totalPages} onChange={(event, newPage: number) => setCommentPage(newPage)}></Pagination>
                         </Stack>
                     </Box>
-                )
+                ) : (<Box sx={{ mb: 20, padding: 3 }} className='flex justify-center'>无评论</Box>)
             }
             <Box sx={{ width: '100%', position: 'fixed', bottom: 0, alignContent: 'center', backgroundColor: '#fff', zIndex: 1, borderTop: 1, borderTopColor: '#ddd' }}>
                 <Stack

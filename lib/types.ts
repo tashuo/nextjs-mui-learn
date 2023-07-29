@@ -22,10 +22,18 @@ export type PaginationData<T> = {
     items: T[],
     meta: {
       totalPages: number,
+      limit: number,
+      nextPage: number,
       total?: number,
-      limit?: number,
-      nextPage?: number,
       page?: number,
+    }
+}
+
+export type CursorPaginationData<T> = {
+    items: T[],
+    meta: {
+      cursor: number;
+      limit: number,
     }
 }
 

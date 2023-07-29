@@ -12,18 +12,16 @@ import { Avatar, Button, ListItemIcon } from '@mui/material';
 import Router from 'next/router';
 import Link from 'next/link';
 import { Logout, Settings } from '@mui/icons-material';
-import HideOnScroll from './HideOnScroll';
 import SearchBar from './Search';
 import { wsConnect } from '../lib/websocket';
 import { isBrowser } from '../lib/helper';
 
 export default function PrimarySearchAppBar() {
   const signInUrl = `/signIn?redirectUrl=${encodeURIComponent('/')}`
-  const avatar = isBrowser() ? localStorage.getItem('avatar') : '';
-  
-  console.log(avatar);
-
+  const [avatar, setAvatar] = React.useState('');
   React.useEffect(() => {
+      setAvatar(localStorage.getItem('avatar') as string);
+      console.log(avatar);
       const socket = wsConnect();
       // 心跳
       const heartbeatInterval = socket ? setInterval(() => {

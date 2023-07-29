@@ -1,3 +1,4 @@
+import { Feed, PaginationData } from "../lib/types";
 import { commonRequest } from "./axios";
 
 export async function publish(content: string, images = [], title = '') {
@@ -5,12 +6,12 @@ export async function publish(content: string, images = [], title = '') {
     return response.data;
 }
 
-export async function getRecommends(page = 1, limit = 12) {
+export async function getRecommends(page = 1, limit = 12): Promise<{data: PaginationData<Feed>}> {
     const response = await commonRequest.get(`/api/post?page=${page}&limit=${limit}`);
     return response.data;
 }
 
-export async function getFeeds(page = 1, limit = 12) {
+export async function getFeeds(page = 1, limit = 12): Promise<{data: PaginationData<Feed>}> {
     const response = await commonRequest.get(`/api/feed/list?page=${page}&limit=${limit}`);
     return response.data;
 }

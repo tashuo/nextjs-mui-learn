@@ -54,6 +54,8 @@ export default function PostForm({isOpen, setState}: {isOpen: boolean, setState:
     const title = titleRef.current ? titleRef.current.value : '';
     const content = contentRef.current ? contentRef.current.value : '';
     console.log(title, content, files);
+    setFiles([]);
+    setState(1);
     let filePaths = [];
     if (files.length > 0) {
         filePaths = (await uploadFiles(files)).data;
@@ -61,6 +63,7 @@ export default function PostForm({isOpen, setState}: {isOpen: boolean, setState:
     }
     const response = await publish(content, filePaths, title);
     console.log(response);
+    setState(2);
   }
 
   return (
