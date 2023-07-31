@@ -34,6 +34,7 @@ export type CursorPaginationData<T> = {
     meta: {
       cursor: number;
       limit: number,
+      hasMore: boolean,
     }
 }
 
@@ -57,9 +58,15 @@ export type CommentInfo = {
     content: string;
     created_at: Date;
     user: User;
+    interaction_info: {
+        like_count: number,
+        liked: boolean,
+        reply_count: number
+    },
     children?: CommentInfo[];
     parent?: CommentInfo;
     created_at_friendly?: string;
+    mpath?: string;
 }
 
 export type PostInfo = Feed;

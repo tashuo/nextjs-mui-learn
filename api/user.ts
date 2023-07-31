@@ -1,5 +1,6 @@
 import { AxiosProgressEvent } from "axios";
 import { commonRequest } from "./axios";
+import { UserProfileData } from "../lib/types";
 
 export async function register(username: string, password: string) {
     const response = await commonRequest.post('/api/user/register', {username, password});
@@ -11,7 +12,7 @@ export async function login(username: string, password: string) {
     return response.data;
 }
 
-export async function getProfile(userId?: string) {
+export async function getProfile(userId?: string | number): Promise<{data: UserProfileData}> {
     const response = await commonRequest.get(`/api/user/profile${userId ? `/${userId}` : ''}`);
     return response.data;
 }

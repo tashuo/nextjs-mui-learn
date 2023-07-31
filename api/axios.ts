@@ -1,8 +1,9 @@
 import Axios from 'axios';
-import { isBrowser } from '../lib/helper';
+import { clearClientLoginState, getItemFromLocalStorage, isBrowser } from '../lib/helper';
+import Router from 'next/router';
 export const commonRequest = Axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_HOST,
-    timeout: 3000,
+    timeout: 10000,
     // withCredentials: true,
 });
 
@@ -25,9 +26,12 @@ commonRequest.interceptors.request.use(
 commonRequest.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-  // if (isBrowser()) {
     console.log(`axios response failed: ${error}`);
     console.log(error);
-  // }
-  return Promise.reject(error);
+    if (error.response.status === 401) {
+        clearClientLoginState();
+        Router.push(`/signIn?redirectUrl=${encodeURIComponent(Router.asPath)}`);
+    }
+    
+    return Promise.reject(error);
 });

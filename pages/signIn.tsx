@@ -33,9 +33,9 @@ export default function SignIn() {
 
         const profile = await getProfile();
         console.log(profile.data);
-        localStorage.setItem('nickname', profile.data.nickname ?? profile.data.username);
+        localStorage.setItem('nickname', profile.data.username);
         localStorage.setItem('avatar', profile.data.avatar_url);
-        localStorage.setItem('userId', profile.data.id);
+        localStorage.setItem('userId', profile.data.id.toString());
         setCookie('token', token);
         setCookie('avatar', profile.data.avatar_url);
         setCookie('userId', profile.data.id);
