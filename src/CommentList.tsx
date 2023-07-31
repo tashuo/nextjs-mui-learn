@@ -16,6 +16,7 @@ export default function CommentList({ post, replyFunc, newComment }: { post: Pos
         }
     });
 
+    const [newChildComment, setNewChildComment] = React.useState<CommentInfo | null>(null);
     React.useEffect(() => {
         console.log(newComment);
         if (isNil(newComment)) {
@@ -27,31 +28,13 @@ export default function CommentList({ post, replyFunc, newComment }: { post: Pos
         if (isNil(newCommentParentId)) {
             console.log([newComment].concat(comments.items));
             setComments({
-                items: [newComment].concat(comments.items),
+                items: uniqBy([newComment].concat(comments.items), 'id'),
                 meta: comments.meta,
             });
             return;
         }
 
-        // 子评论
-        const newComments = comments.items.map((v: CommentInfo) => {
-            let isCurrentBranch = false;
-            if (v.id === newComment.parent?.id) {
-                isCurrentBranch = true;
-            }
-            isCurrentBranch || v.children?.forEach((c: CommentInfo) => {
-                if (c.id === newComment.parent?.id) {
-                    console.log(`match ${c.id}`);
-                    isCurrentBranch = true;
-                }
-            });
-            return isCurrentBranch ? Object.assign(v, { children: isNil(v.children) ? [newComment] : [newComment].concat(v.children) }) : v;
-        });
-        console.log(newComments);
-        setComments({
-            items: newComments,
-            meta: comments.meta,
-        });
+        setNewChildComment(newComment);
     }, [newComment]);
 
     const [loadNewData, setLoadNewData] = React.useState(false);
@@ -122,10 +105,11 @@ export default function CommentList({ post, replyFunc, newComment }: { post: Pos
             </Box>
             <Box sx={{ mt: 1, mb: 20, width: '100%', position: 'relative', px: 4.5 }}>
                 <Box>
+
                     { 
                         comments.items.map(
                             (comment: CommentInfo) => (
-                                <CommentNode key={comment.id} comment={comment} handleClick={(comment: CommentInfo) => handleCommentClick(comment)} />
+                                <CommentNode key={comment.id} comment={comment} newChildComment={newChildComment?.mpath?.substring(0, newChildComment?.mpath?.indexOf('.')) === comment.id.toString() ? newChildComment : undefined} handleClick={(comment: CommentInfo) => handleCommentClick(comment)} />
                             )
                         ) 
                     }

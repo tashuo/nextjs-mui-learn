@@ -8,7 +8,6 @@ import { Container } from "@mui/material";
 import Head from "next/head";
 import PostDetailBar from "../../src/post/PostDetailBar";
 import PostDetailBottom from "../../src/post/PostDetailBottom";
-import { isNil } from "lodash";
 
 export default function Detail({ post }: { post: PostInfo }) {
     const [replyComment, setReplyComment] = React.useState<null | CommentInfo>(null);

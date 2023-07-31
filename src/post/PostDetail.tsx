@@ -1,10 +1,9 @@
-import { PostInfo, CommentInfo, CursorPaginationData } from "../../lib/types";
+import { PostInfo } from "../../lib/types";
 import { Box, Container, Typography } from "@mui/material";
 import Slider from "react-slick";
-import * as React from "react";
 
 export default function PostDetail({ post }: { post: PostInfo }) {
-    const contentMarginTop = post.image_urls.length > 0 ? 5 : 10;
+    const contentMarginTop = post.image_urls.length > 0 ? 5 : 8;
     const settings = {
         dots: true,
         fade: true,

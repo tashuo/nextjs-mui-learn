@@ -1,14 +1,15 @@
 import { useRouter } from "next/router";
 import { CommentInfo, CursorPaginationData } from "../lib/types";
-import { Avatar, Box, Divider, IconButton, Link, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Button, Divider, IconButton, Link, Stack, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Comment } from "@mui/icons-material";
+import { Comment, FavoriteBorder, FavoriteOutlined, ModeComment, ModeCommentOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { pink } from "@mui/material/colors";
 import { isLogin } from "../lib/helper";
 import { cancelLikeComment, getChildenComments, likeComment } from "../api/comment";
+import { isNil, uniqBy } from "lodash";
 
-export const BaseCommentNode = ({comment, handleClick}: {comment: CommentInfo, handleClick: Function}) => {
+export const BaseCommentNode = ({comment, handleClick, rootCommentId}: {comment: CommentInfo, handleClick: Function, rootCommentId?: number}) => {
     const [liked, setLiked] = useState(comment.interaction_info.liked);
     const [likeCount, setLikeCount] = useState(comment.interaction_info?.like_count || 0);
     const router = useRouter();
@@ -31,7 +32,6 @@ export const BaseCommentNode = ({comment, handleClick}: {comment: CommentInfo, h
             direction='row'
             spacing={0.5}
             mt={2}
-            onClick={(event: React.MouseEvent<HTMLElement>) => { event.stopPropagation(); handleClick(comment)}}
         >
             <Avatar
                 alt={comment.user.username}
@@ -52,14 +52,52 @@ export const BaseCommentNode = ({comment, handleClick}: {comment: CommentInfo, h
                 >
                     {comment.user.username}
                 </Typography>
-                <Typography
-                    variant="body1"
-                    component="div"
-                    pb={1}
-                    fontSize={14}
-                >
-                    {comment.mpath + '|' + comment.content}
-                </Typography>
+                <Box>
+                    {
+                        comment.parent?.id !== rootCommentId
+                        && (
+                            <>
+                                <Typography
+                                    variant="body1"
+                                    component="span"
+                                    fontSize={14}
+                                    marginY='auto'
+                                >
+                                    回复
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    component="span"
+                                    fontSize={14}
+                                    lineHeight='19px'
+                                    fontWeight={5}
+                                    marginY='auto'
+                                    marginLeft='2px'
+                                >
+                                    {comment.parent?.user.username}
+                                </Typography>
+                                <Typography
+                                    variant="body1"
+                                    component="span"
+                                    fontSize={14}
+                                    marginY='auto'
+                                    marginRight='2px'
+                                >
+                                    :
+                                </Typography>
+                            </>
+                        )
+                    }
+                    <Typography
+                        variant="body1"
+                        component="span"
+                        fontSize={14}
+                        marginY='auto'
+                        overflow='inherit'
+                    >
+                        {comment.mpath + '|' + comment.content}
+                    </Typography>
+                </Box>
                 <Stack
                     spacing={2}
                 >
@@ -86,7 +124,7 @@ export const BaseCommentNode = ({comment, handleClick}: {comment: CommentInfo, h
                                 spacing={0}
                             >
                                 <IconButton aria-label="add to favorites" onClick={handleLike}>
-                                    {liked ? <FavoriteIcon sx={{ color: pink[500] }} fontSize="small" /> : <FavoriteIcon fontSize="small" />}
+                                    {liked ? <FavoriteOutlined sx={{ color: pink[500] }} fontSize="small" /> : <FavoriteBorder fontSize="small" />}
                                 </IconButton>
                                 <Typography
                                     component="div"
@@ -99,8 +137,8 @@ export const BaseCommentNode = ({comment, handleClick}: {comment: CommentInfo, h
                                 direction='row'
                                 spacing={0}
                             >
-                                <IconButton aria-label="add to favorites" onClick={handleLike}>
-                                    <Comment fontSize="small" />
+                                <IconButton aria-label="reply" onClick={(event: React.MouseEvent<HTMLElement>) => { event.stopPropagation(); handleClick(comment)}}>
+                                    <ModeCommentOutlined fontSize="small" />
                                 </IconButton>
                                 <Typography
                                     component="div"
@@ -117,7 +155,7 @@ export const BaseCommentNode = ({comment, handleClick}: {comment: CommentInfo, h
     );
 }
 
-export const CommentNode = ({comment, handleClick}: {comment: CommentInfo, handleClick: Function}) => {
+export const CommentNode = ({comment, handleClick, newChildComment}: {comment: CommentInfo, handleClick: Function, newChildComment?: CommentInfo}) => {
     const [childrenComments, setChildrenComments] = useState<CursorPaginationData<CommentInfo>>({
         items: comment?.children || new Array<CommentInfo>(),
         meta: {
@@ -126,10 +164,18 @@ export const CommentNode = ({comment, handleClick}: {comment: CommentInfo, handl
             hasMore: true,
         }
     });
-    if (comment.id === 565) {
-        console.log('comment node render');
-        console.log(childrenComments);
-    }
+
+    useEffect(() => {
+        console.log(newChildComment);
+        if (isNil(newChildComment)) {
+            return;
+        }
+
+        setChildrenComments({
+            ...childrenComments,
+            items: uniqBy([newChildComment].concat(childrenComments.items), 'id'),
+        });
+    }, [ newChildComment ]);
 
     const leftCommentsCount = childrenComments.meta.hasMore ? (comment.interaction_info.reply_count - childrenComments.items.length) : 0;
 
@@ -137,13 +183,13 @@ export const CommentNode = ({comment, handleClick}: {comment: CommentInfo, handl
         const response = await getChildenComments(comment.id, childrenComments.meta.cursor);
         setChildrenComments({
             ...response.data,
-            items: childrenComments.items.concat(response.data.items),
+            items: uniqBy(childrenComments.items.concat(response.data.items), 'id'),
         });
     }
 
     return (
         <Box sx={{ width: '100%' }}>
-            <BaseCommentNode comment={comment} handleClick={handleClick} />
+            <BaseCommentNode key={comment.id} comment={comment} handleClick={handleClick} />
             {
                 childrenComments.items.length > 0 
                 && (
@@ -152,7 +198,7 @@ export const CommentNode = ({comment, handleClick}: {comment: CommentInfo, handl
                     >
                         {
                             childrenComments.items.map((v: CommentInfo) => (
-                                <BaseCommentNode comment={v} handleClick={handleClick} />
+                                <BaseCommentNode key={v.id} comment={v} rootCommentId={comment.id} handleClick={handleClick} />
                             ))
                         }
                     </Box>
@@ -161,9 +207,9 @@ export const CommentNode = ({comment, handleClick}: {comment: CommentInfo, handl
             {
                 leftCommentsCount > 0
                 && (
-                    <Link sx={{ marginLeft: '52px' }} underline="none" onClick={loadComments}>
-                        展开剩余{leftCommentsCount}回复
-                    </Link>
+                    <Button sx={{ marginLeft: '52px', paddingX: 0 }} variant="text" onClick={loadComments}>
+                        展开 {leftCommentsCount} 条回复
+                    </Button>
                 )
             }
             <Divider sx={{ marginLeft: '28px' }} />

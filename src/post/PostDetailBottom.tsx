@@ -1,4 +1,4 @@
-import { AddToPhotos, Comment, Favorite, Send } from "@mui/icons-material";
+import { AddToPhotos, CollectionsBookmarkOutlined, Comment, Favorite, FavoriteBorder, FavoriteOutlined, ModeCommentOutlined, Send } from "@mui/icons-material";
 import { Avatar, Box, IconButton, InputBase, Paper, Stack, Typography } from "@mui/material";
 import * as React from 'react';
 import { cancelLike, like } from "../../api/post";
@@ -42,36 +42,6 @@ export default function PostDetailBottom({ post, replyComment, publishFunc }: { 
             commentRef.current.value = '';
         }
         publishFunc(response.data);
-        // const newComment = response.data as CommentInfo;
-        // console.log(currentReplyComment, newComment);
-        // const newCommentParentId = newComment.parent?.id;
-        // if (isNil(newCommentParentId)) {
-        //     console.log([newComment].concat(comments.items));
-        //     setComments({
-        //         items: [newComment].concat(comments.items),
-        //         meta: comments.meta,
-        //     });
-        //     return;
-        // }
-
-        // const newComments = comments.items.map((v: CommentInfo) => {
-        //     let isCurrentBranch = false;
-        //     if (v.id === newComment.parent?.id) {
-        //         isCurrentBranch = true;
-        //     }
-        //     isCurrentBranch || v.children?.forEach((c: CommentInfo) => {
-        //         if (c.id === newComment.parent?.id) {
-        //             console.log(`match ${c.id}`);
-        //             isCurrentBranch = true;
-        //         }
-        //     });
-        //     return isCurrentBranch ? Object.assign(v, { children: isNil(v.children) ? [newComment] : [newComment].concat(v.children) }) : v;
-        // });
-        // console.log(newComments);
-        // setComments({
-        //     items: newComments,
-        //     meta: comments.meta,
-        // });
     }
 
     const handleLike = async () => {
@@ -87,6 +57,11 @@ export default function PostDetailBottom({ post, replyComment, publishFunc }: { 
         }
     }
 
+    const commentButtonClick = () => {
+        setCurrentReplyComment(null);
+        commentRef.current?.focus();
+    }
+
     return (
         <Box sx={{ width: '100%', position: 'fixed', bottom: 0, alignContent: 'center', backgroundColor: '#fff', zIndex: 1, borderTop: 1, borderTopColor: '#ddd' }}>
             <Stack
@@ -95,19 +70,19 @@ export default function PostDetailBottom({ post, replyComment, publishFunc }: { 
                 <Stack direction='row' sx={{ marginTop: 1, px: 2 }}>
                     <div className='flex px-2'>
                       <IconButton aria-label="add to favorites" onClick={handleLike}>
-                        {isLiked ? <Favorite sx={{ color: pink[500] }} /> : <Favorite />}
+                        {isLiked ? <FavoriteOutlined sx={{ color: pink[500] }} /> : <FavoriteBorder />}
                       </IconButton>
                       <Typography color="text.secondary" className='mx-auto my-auto'>{likeCount}</Typography>
                     </div>
                     <div className='flex px-2'>
-                      <IconButton aria-label="comment">
-                        <Comment />
+                      <IconButton aria-label="comment" onClick={commentButtonClick}>
+                        <ModeCommentOutlined />
                       </IconButton>
                       <Typography color="text.secondary" className='mx-auto my-auto'>{post.comment_count}</Typography>
                     </div>
                     <div className='flex px-2'>
                       <IconButton aria-label="collect">
-                        <AddToPhotos />
+                        <CollectionsBookmarkOutlined />
                       </IconButton>
                       <Typography color="text.secondary" className='mx-auto my-auto'>{post.collect_count}</Typography>
                     </div>
@@ -118,6 +93,7 @@ export default function PostDetailBottom({ post, replyComment, publishFunc }: { 
                     <Paper
                       component="form"
                       sx={{ display: 'flex', alignItems: 'center' }}
+                      className="focus:scale-110 duration-1000"
                     >
                       <IconButton sx={{ p: '10px' }} aria-label="menu">
                         <Avatar src={avatar} alt={nickname} sx={{ width: 30, height: 30 }} />
