@@ -14,7 +14,7 @@ import Link from 'next/link';
 import { Logout, Settings } from '@mui/icons-material';
 import SearchBar from './Search';
 import { wsConnect } from '../lib/websocket';
-import { isBrowser } from '../lib/helper';
+import { clearClientLoginState, isBrowser } from '../lib/helper';
 
 export default function PrimarySearchAppBar() {
   const signInUrl = `/signIn?redirectUrl=${encodeURIComponent('/')}`
@@ -61,10 +61,7 @@ export default function PrimarySearchAppBar() {
 
   const handleLogout = () => {
     console.log('logout');
-    localStorage.removeItem('bearerToken');
-    localStorage.removeItem('avatar');
-    localStorage.removeItem('nickname');
-    localStorage.removeItem('userid');
+    clearClientLoginState();
     Router.reload();
   };
 

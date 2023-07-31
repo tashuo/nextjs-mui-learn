@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 import { cancelLike, like } from '../api/post';
 import { AddToPhotos, Comment } from '@mui/icons-material';
 import { Feed } from '../lib/types';
-import PostSetting from './PostSetting';
+import PostSetting from './post/PostSetting';
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }

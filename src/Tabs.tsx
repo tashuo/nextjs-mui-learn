@@ -14,7 +14,7 @@ import ScrollTop from './ScrollTop';
 import AddPostButton from './AddPostButton';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Create } from '@mui/icons-material';
-import PostForm from './PostForm';
+import PostForm from './post/PostForm';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import { uniqBy } from 'lodash';
 

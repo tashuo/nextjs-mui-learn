@@ -16,9 +16,9 @@ import Input from '@mui/material/Input';
 import { Box } from '@mui/material';
 import { ImageList } from '@mui/material';
 import { ImageListItem } from '@mui/material';
-import { uploadFiles } from '../api/user';
-import { publish } from '../api/post';
-import { isBrowser } from '../lib/helper';
+import { uploadFiles } from '../../api/user';
+import { publish } from '../../api/post';
+import { isBrowser } from '../../lib/helper';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

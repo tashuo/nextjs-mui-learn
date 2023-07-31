@@ -1,6 +1,6 @@
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { useEffect, useState } from "react";
-import SnackBarNotice from "./SnackBarNotice";
+import SnackBarNotice from "../SnackBarNotice";
 
 export default function PostSetting({stateChange, currentState, postId}: { currentState: boolean, stateChange: Function, postId: number}) {
     const [state, setState] = useState(false);

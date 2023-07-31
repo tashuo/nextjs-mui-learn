@@ -9,7 +9,7 @@ export default function Profile({ userProfile }: { userProfile: UserProfileData 
     const [isFollowing, setIsFollowing] = useState(userProfile.interactionInfo.isFollowing);
     const router = useRouter();
     const loginUserId = getItemFromLocalStorage('userId');
-    const isSelf = loginUserId && parseInt(loginUserId) === userProfile.id;
+    const isSelf = parseInt(loginUserId) === userProfile.id;
     console.log(router);
     const handleFollow = async () => {
         if (!isLogin()) {
