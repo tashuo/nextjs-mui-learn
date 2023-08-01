@@ -1,13 +1,13 @@
 import { isNil } from 'lodash';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { isBrowser } from './helper';
 
-export const wsConnect = () => {
+export const wsConnect = (): Socket|null|undefined => {
     console.log('wsConnect');
     if (isBrowser()) {
         const token = localStorage.getItem('bearerToken');
         if (isNil(token)) {
-            return;
+            return null;
         }
         try {
             const socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_HOST as string, {

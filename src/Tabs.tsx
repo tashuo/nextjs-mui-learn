@@ -17,6 +17,7 @@ import { Create } from '@mui/icons-material';
 import PostForm from './post/PostForm';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import { uniqBy } from 'lodash';
+import { useInfiniteScroll } from '../lib/hooks';
 
 export default function LabTabs() {
   const [value, setValue] = React.useState('recommend');
@@ -41,6 +42,7 @@ export default function LabTabs() {
   const [hasMoreFollowing, setHasMoreFollowing] = React.useState(true);
   const router = useRouter();
   const pageReducer = (state: { recommend: number, following: number }, action: { type: string }) => {
+    console.log(action.type);
     switch (action.type) {
         case 'recommend':
             console.log(state.recommend, recommendData.meta);
@@ -79,29 +81,9 @@ export default function LabTabs() {
   }, [pager.recommend, pager.following ]);
 
   const bottomRefreshRef = React.useRef(null);
-  React.useEffect(() => {
-    console.log(`init scroll`);
-    const scrollObserver = new IntersectionObserver(entries => {
-        console.log(`scrolling`);
-        console.log(value);
-        if (entries[0].isIntersecting) {
-            pagerDispacth({
-                type: value,
-            });
-        }
-    }, { threshold: 1 });
-
-    if (bottomRefreshRef.current) {
-        scrollObserver.observe(bottomRefreshRef.current);
-    }
-
-    return () => {
-      console.log('unmount scroll');
-      if (bottomRefreshRef.current) {
-        scrollObserver.unobserve(bottomRefreshRef.current);
-      }
-    }
-  }, [bottomRefreshRef, value]);
+  useInfiniteScroll(bottomRefreshRef, () => pagerDispacth({
+      type: value,
+  }), [value as unknown as never]);
 
   const [publishProcess, setPublishProcess] = React.useState(0);
   React.useEffect(() => {

@@ -13,7 +13,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useRouter } from 'next/router';
 import { cancelLike, like } from '../api/post';
-import { AddToPhotos, Comment } from '@mui/icons-material';
+import { AddToPhotos, CollectionsBookmarkOutlined, Comment, FavoriteBorder, FavoriteOutlined, ModeCommentOutlined } from '@mui/icons-material';
 import { Feed } from '../lib/types';
 import PostSetting from './post/PostSetting';
 interface ExpandMoreProps extends IconButtonProps {
@@ -112,19 +112,19 @@ export const FeedCard = ({ props, settingClick }: { props: Feed, settingClick: F
       <CardActions className='text-center'>
         <div className='flex px-2'>
           <IconButton aria-label="add to favorites" onClick={handleLike}>
-            {isLiked ? <FavoriteIcon sx={{ color: pink[500] }} /> : <FavoriteIcon />}
+            {isLiked ? <FavoriteOutlined sx={{ color: pink[500] }} /> : <FavoriteBorder />}
           </IconButton>
           <Typography color="text.secondary" className='mx-auto my-auto'>{likeCount}</Typography>
         </div>
         <div className='flex px-2'>
           <IconButton aria-label="comment">
-            <Comment />
+            <ModeCommentOutlined />
           </IconButton>
           <Typography color="text.secondary" className='mx-auto my-auto'>{props.comment_count}</Typography>
         </div>
         <div className='flex px-2'>
           <IconButton aria-label="collect">
-            <AddToPhotos />
+            <CollectionsBookmarkOutlined />
           </IconButton>
           <Typography color="text.secondary" className='mx-auto my-auto'>{props.collect_count}</Typography>
         </div>

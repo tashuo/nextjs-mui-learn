@@ -15,27 +15,15 @@ import { Logout, Settings } from '@mui/icons-material';
 import SearchBar from './Search';
 import { wsConnect } from '../lib/websocket';
 import { clearClientLoginState, isBrowser } from '../lib/helper';
+import { useSocketIO } from '../lib/hooks';
 
 export default function PrimarySearchAppBar() {
   const signInUrl = `/signIn?redirectUrl=${encodeURIComponent('/')}`
   const [avatar, setAvatar] = React.useState('');
   React.useEffect(() => {
       setAvatar(localStorage.getItem('avatar') as string);
-      console.log(avatar);
-      const socket = wsConnect();
-      // 心跳
-      const heartbeatInterval = socket ? setInterval(() => {
-        console.log(`heartbeat: ${Date.now()}`);
-        socket.emit('heartbeat', {
-            live: true
-        });
-      }, 60000) : null;
-      return () => {
-        socket?.disconnect();
-        heartbeatInterval && window.clearInterval(heartbeatInterval);
-        console.log('ws disconnect');
-      }
   }, []);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 

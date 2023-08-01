@@ -3,9 +3,11 @@ import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Paper } from '@mui/material';
+import { Badge, BadgeProps, Paper, styled } from '@mui/material';
 import { Home, Notifications, Person } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import { useSocketIO } from '../lib/hooks';
+import { getNoticeSummary } from '../api/notice';
 
 const getUriFromNavValue = (value: number): string => {
   switch (value) {
@@ -31,11 +33,38 @@ const getCurrentNavValueFromUri = (): number => {
 
 export default function SimpleBottomNavigation() {
   const router = useRouter();
+  const [noticeCount, setNoticeCount] = React.useState(0);
+  useSocketIO([
+    {
+        event: 'notification',
+        callback: (message: number) => {
+          console.log(message);
+          router.pathname !== '/notifications' && setNoticeCount(message);
+        },
+    }, {
+      event: 'newNotification',
+      callback: (message: boolean) => {
+        console.log(message);
+        router.pathname !== '/notifications' && setNoticeCount((v) => v + 1);
+      },
+    }
+  ]);
+  
   const currentValue = getCurrentNavValueFromUri();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     const uri = getUriFromNavValue(newValue);
     router.push(uri, undefined, { shallow: true });
   };
+
+  const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+    '& .MuiBadge-badge': {
+      top: 3,
+      border: `2px solid ${theme.palette.background.paper}`,
+      padding: '0 4px',
+      backgroundColor: 'red',
+      color: 'white',
+    },
+  }));
 
   return (
     <Box sx={{ pb: 7 }}>
@@ -46,7 +75,7 @@ export default function SimpleBottomNavigation() {
             onChange={handleChange}
           >
             <BottomNavigationAction label="Home" icon={<Home />} />
-            <BottomNavigationAction label="Notification" icon={<Notifications />} />
+            <BottomNavigationAction label="Notification" icon={<StyledBadge badgeContent={noticeCount}><Notifications /></StyledBadge>} />
             <BottomNavigationAction label="Me" icon={<Person />} />
           </BottomNavigation>
       </Paper>

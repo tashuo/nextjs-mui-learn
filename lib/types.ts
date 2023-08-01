@@ -26,6 +26,7 @@ export type PaginationData<T> = {
       nextPage: number,
       total?: number,
       page?: number,
+      isLoading?: boolean,
     }
 }
 
@@ -35,6 +36,7 @@ export type CursorPaginationData<T> = {
       cursor: number;
       limit: number,
       hasMore: boolean,
+      isLoading?: boolean,
     }
 }
 
@@ -70,3 +72,12 @@ export type CommentInfo = {
 }
 
 export type PostInfo = Feed;
+
+export type Notice = {
+    id: number;
+    type: string;
+    operator: User;
+    created_at_friendly: string;
+    post?: PostInfo;
+    comment?: CommentInfo;
+}

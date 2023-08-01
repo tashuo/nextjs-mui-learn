@@ -26,17 +26,17 @@ export async function cancelLike(postId: number) {
     return response.data;
 }
 
-export async function getPosts(userId?: number, page = 1, limit = 12) {
+export async function getPosts(userId?: number, page = 1, limit = 12): Promise<{data: PaginationData<Feed>}> {
     const response = await commonRequest.get(`/api/post?user=${userId ? userId : ''}&page=${page}&limit=${limit}`);
     return response.data;
 }
 
-export async function getLikePosts(userId: number, page = 1, limit = 12) {
+export async function getLikePosts(userId: number, page = 1, limit = 12): Promise<{data: PaginationData<{post: Feed}>}> {
     const response = await commonRequest.get(`/api/post/likes?user=${userId}&page=${page}&limit=${limit}`);
     return response.data;
 }
 
-export async function getCollectPosts(userId: number, collectId ?: number, page = 1, limit = 12) {
+export async function getCollectPosts(userId: number, collectId ?: number, page = 1, limit = 12): Promise<{data: PaginationData<{post: Feed}>}> {
     const response = await commonRequest.get(`/api/post/collects?user=${userId}&collect=${collectId ? collectId : ''}&page=${page}&limit=${limit}`);
     return response.data;
 }

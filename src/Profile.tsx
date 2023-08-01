@@ -31,7 +31,7 @@ export default function Profile({ userProfile }: { userProfile: UserProfileData 
                             id: {userProfile.id}
                         </div>
                     </div>
-                    { isSelf || (
+                    { !isSelf && (
                         <div className="mt-1 px-2" onClick={handleFollow}>
                         {
                             isFollowing

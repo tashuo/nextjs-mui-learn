@@ -1,3 +1,5 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { PostInfo } from "../../lib/types";
 import { Box, Container, Typography } from "@mui/material";
 import Slider from "react-slick";
@@ -13,6 +15,7 @@ export default function PostDetail({ post }: { post: PostInfo }) {
         slidesToScroll: 1,
         // adaptiveHeight: true
     };
+    
     const imageSlider = post.image_urls.length > 0 ?  (
         <Container sx={{ mt: 8, width: '100%', backgroundColor: '#eee', alignContent: 'center' }}>
             <Slider {...settings}>

@@ -28,7 +28,7 @@ commonRequest.interceptors.response.use(function (response) {
 }, function (error) {
     console.log(`axios response failed: ${error}`);
     console.log(error);
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
         clearClientLoginState();
         Router.push(`/signIn?redirectUrl=${encodeURIComponent(Router.asPath)}`);
     }

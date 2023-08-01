@@ -44,14 +44,10 @@ export default function CommentList({ post, replyFunc, newComment }: { post: Pos
             console.log(comments.meta);
             const response = await getComments(post.id, comments.meta.cursor);
             console.log(response.data);
-            if (response.data.items.length > 0) {
-                setComments({
-                    ...response.data,
-                    items: uniqBy(comments.items.concat(response.data.items), 'id'),
-                });
-            } else {
-                console.log('no more comments.items');
-            }
+            setComments({
+                ...response.data,
+                items: uniqBy(comments.items.concat(response.data.items), 'id'),
+            });
         };
         fetchData();
     }, [ loadNewData ]);

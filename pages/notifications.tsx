@@ -1,11 +1,21 @@
-import Layout from "../src/Layout";
+import { useEffect } from 'react';
+import Layout from '../src/Layout';
+import NotificationTabs from '../src/NotificationTabs';
+import { isLogin } from '../lib/helper';
+import { useRouter } from 'next/router';
 
-export default function Favorites() {
+export default function Notifications() {
+    const router = useRouter();
+    useEffect(() => {
+        if (!isLogin()) {
+            router.push(`/signIn?redirectUrl=${encodeURIComponent(router.asPath)}`);
+            return;
+        }
+    }, []);
+    
     return (
-        <Layout>
-            <div className="my-20 text-center text-lg">
-                我的通知
-            </div>
-        </Layout>
+      <Layout title='notifications'>
+        <NotificationTabs />
+      </Layout>
     );
 }
