@@ -59,7 +59,10 @@ export default function LabTabs() {
     console.log('fetching');
     console.log(pager);
     const fetchData = async () => {
-        if (value === 'recommend' && pager.recommend > 0) {
+        if (value === 'recommend') {
+          if (pager.recommend === 0) {
+              return;
+          }
           const newRecommends = (await getRecommends(pager.recommend)).data;
           setRecommendData({
             ...newRecommends,

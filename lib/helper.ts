@@ -14,7 +14,7 @@ export const clearClientLoginState = () => {
         localStorage.removeItem('bearerToken');
         localStorage.removeItem('avatar');
         localStorage.removeItem('nickname');
-        localStorage.removeItem('userid');
+        localStorage.removeItem('userId');
         deleteCookie('token');
         deleteCookie('avatar');
         deleteCookie('userId');

@@ -21,7 +21,7 @@ export default function Profile({ userProfile }: { userProfile: UserProfileData 
     }
 
     return (
-        <div className="flex flex-col justify-between mt-8 px-5 py-8 mx-auto items-center sm:flex-row sm:mx-14 sm:px-0">
+        <div className="flex flex-col mt-8 px-5 py-8 mx-auto items-center sm:flex-row sm:mx-14 sm:px-0">
             <Avatar className="w-1/3 h-full sm:w-1/4" src={userProfile.avatar_url ? userProfile.avatar_url : 'https://mui.com/static/images/avatar/4.jpg'} alt="Woman paying for a purchase"/>
             <div className="mt-4 sm:mt-0 sm:ml-10">
                 <div className="flex justify-between">

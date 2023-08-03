@@ -12,6 +12,11 @@ export async function login(username: string, password: string) {
     return response.data;
 }
 
+export async function githubLogin(code: string) {
+    const response = await commonRequest.post('/api/user/githubLogin', {code});
+    return response.data;
+}
+
 export async function getProfile(userId?: string | number): Promise<{data: UserProfileData}> {
     const response = await commonRequest.get(`/api/user/profile${userId ? `/${userId}` : ''}`);
     return response.data;
