@@ -2,34 +2,42 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { PostInfo } from "../../lib/types";
 import { Box, Container, Typography } from "@mui/material";
-import Slider from "react-slick";
+import Slider, { Settings } from "react-slick";
 
 export default function PostDetail({ post }: { post: PostInfo }) {
     const contentMarginTop = post.image_urls.length > 0 ? 5 : 8;
-    const settings = {
+    const settings: Settings = {
         dots: true,
         fade: true,
         infinite: true,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        // adaptiveHeight: true
+        // autoplay: true,
+        centerMode: true,
+        // centerPadding: '100px',
+        draggable: true,
+        adaptiveHeight: true,
+        className: 'h-screen'
     };
     
     const imageSlider = post.image_urls.length > 0 ?  (
-        <Container sx={{ mt: 8, width: '100%', backgroundColor: '#eee', alignContent: 'center' }}>
+        <Container sx={{ mt: 8, backgroundColor: '#eee', alignContent: 'center' }}>
             <Slider {...settings}>
                 {post.image_urls.map((v: string, k) => (
-                    <div key={k} className="w-full">
+                    <Box
+                     key={k}
+                    //  className='h-screen'
+                    //  sx={{ height: 400 }}
+                    >
                         <img
                           key={k}
                           src={v}
                           srcSet={v}
                           alt={k.toString()}
                           loading="lazy"
-                          className="h-auto max-w-md mx-auto"
                         />
-                    </div>
+                    </Box>
                 ))}
             </Slider>
         </Container>

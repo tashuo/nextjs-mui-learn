@@ -25,7 +25,7 @@ export default function LabTabs() {
     items: new Array<Feed>(),
     meta: {
       limit: 12,
-      nextPage: 2,
+      nextPage: 1,
       totalPages: 10,
     }
   });
@@ -38,8 +38,6 @@ export default function LabTabs() {
     }
   });
   const [showPostForm, setShowPostForm] = React.useState(false);
-  const [hasMoreRecommend, setHasMoreRecommend] = React.useState(true);
-  const [hasMoreFollowing, setHasMoreFollowing] = React.useState(true);
   const router = useRouter();
   const pageReducer = (state: { recommend: number, following: number }, action: { type: string }) => {
     console.log(action.type);
@@ -54,33 +52,44 @@ export default function LabTabs() {
             return state;
     }
   }
-  const [ pager, pagerDispacth ] = React.useReducer(pageReducer, { recommend: 0, following: 1 });
+  const [ pager, pagerDispacth ] = React.useReducer(pageReducer, { recommend: 0, following: 0 });
   React.useEffect(() => {
-    console.log('fetching');
+    console.log(`fetching ${value}`);
     console.log(pager);
-    const fetchData = async () => {
-        if (value === 'recommend') {
-          if (pager.recommend === 0) {
-              return;
-          }
-          const newRecommends = (await getRecommends(pager.recommend)).data;
+    if (value === 'recommend') {
+      if (pager.recommend === 0) {
+        return;
+      }
+      recommendData.meta.isLoading = true;
+      setRecommendData(recommendData);
+      getRecommends(pager.recommend).then((res) => res.data)
+      .then((newRecommends) => {
           setRecommendData({
             ...newRecommends,
             items: uniqBy(recommendData.items.concat(newRecommends.items), 'id'),
           });
-          setHasMoreRecommend(newRecommends.meta.nextPage > 0);
-        } else if (isLogin()) {
-          const newFollowings = (await getFeeds(pager.following)).data;
-          pager.following > 0 && setFollowingData({
-              ...newFollowings,
-              items: uniqBy(followingData.items.concat(newFollowings.items), 'id'),
+      }).catch((error) => {
+          console.log(error);
+      })
+    } else if (isLogin()) {
+      if (pager.following === 0) {
+        return;
+      }
+      followingData.meta.isLoading = true;
+      setFollowingData(followingData);
+      getFeeds(pager.following).then((res) => res.data)
+        .then((newFollowings) => {
+          setFollowingData({
+            ...newFollowings,
+            items: uniqBy(followingData.items.concat(newFollowings.items), 'id'),
           });
-          setHasMoreFollowing(newFollowings.meta.nextPage > 0);
-        } else {
-            router.push(`/signIn?redirectUrl=${encodeURIComponent('/')}`);
-        }
-    };
-    fetchData();
+        }).catch((error) => {
+            console.log(error);
+        })
+    } else {
+      router.push(`/signIn?redirectUrl=${encodeURIComponent('/')}`);
+      return;
+    }
   }, [pager.recommend, pager.following ]);
 
   const bottomRefreshRef = React.useRef(null);
@@ -149,8 +158,10 @@ export default function LabTabs() {
               <CardList items={followingData.items} />
             </div>
             {
-                hasMoreFollowing ? 
-                (<Box className='flex justify-center py-5' ref={bottomRefreshRef}><CircularProgress /></Box>) 
+                followingData.meta.nextPage > 0 ? 
+                followingData.meta.isLoading !== undefined ?
+                (<Box className='flex justify-center py-5'><CircularProgress /></Box>) 
+                : (<LinearProgress ref={bottomRefreshRef} />)
                 : (
                   <Box paddingY={5}>
                     <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
@@ -167,8 +178,10 @@ export default function LabTabs() {
                   <CardList items={recommendData.items} />
               </div>
               {
-                  hasMoreRecommend 
-                  ? (<Box className='flex justify-center py-5' ref={bottomRefreshRef}><CircularProgress /></Box>) 
+                  recommendData.meta.nextPage ?
+                  recommendData.meta.isLoading ? 
+                  (<Box className='flex justify-center py-5'><CircularProgress /></Box>) 
+                  : (<LinearProgress ref={bottomRefreshRef} />)
                   : (
                     <Box paddingY={5}>
                       <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>

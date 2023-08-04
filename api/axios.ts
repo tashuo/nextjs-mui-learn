@@ -3,7 +3,7 @@ import { clearClientLoginState, getItemFromLocalStorage, isBrowser } from '../li
 import Router from 'next/router';
 export const commonRequest = Axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_HOST,
-    timeout: 5000,
+    timeout: 50000,
     // withCredentials: true,
 });
 

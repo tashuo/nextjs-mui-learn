@@ -150,7 +150,7 @@ export default function PostForm({isOpen, setState}: {isOpen: boolean, setState:
                     type='file'
                     inputProps={{ multiple: true }}
                     onChange={handleFileSelect}
-                    className='hidden'
+                    sx={{ display: 'none' }}
                 />
                 <label htmlFor='select-image'>
                     <PhotoOutlined />
