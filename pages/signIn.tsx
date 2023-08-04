@@ -15,19 +15,6 @@ import { CircularProgress } from '@mui/material';
 import { getProfile, githubLogin } from '../api/user';
 import { setCookie } from 'cookies-next';
 
-const ColorButton = styled(Button)<ButtonProps>({
-  backgroundColor: common.black[500],
-  '&:hover': {
-    backgroundColor: common.black[700],
-  },
-  '&:focus': {
-    backgroundColor: common.black[700],
-  },
-  '&:active': {
-    backgroundColor: common.black[700],
-  },
-});
-
 export default function SignIn() {
   const [isLogining, setIsLogining] = React.useState(false);
   const router = useRouter();
@@ -90,13 +77,14 @@ export default function SignIn() {
                     <CircularProgress />
                   ) :
                   (
-                    <ColorButton
+                    <Button
                       variant="contained"
                       onClick={() => router.push(githubAuthUrl)}
+                      sx={{ backgroundColor: 'black!important' }}
                     >
                       <GitHub />
                       login with github
-                    </ColorButton>
+                    </Button>
                   )
               }
           </Box>

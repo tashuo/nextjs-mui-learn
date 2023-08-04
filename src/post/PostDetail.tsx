@@ -15,20 +15,18 @@ export default function PostDetail({ post }: { post: PostInfo }) {
         slidesToScroll: 1,
         // autoplay: true,
         centerMode: true,
-        // centerPadding: '100px',
+        centerPadding: '100px',
         draggable: true,
         adaptiveHeight: true,
-        className: 'h-screen'
     };
     
     const imageSlider = post.image_urls.length > 0 ?  (
-        <Container sx={{ mt: 8, backgroundColor: '#eee', alignContent: 'center' }}>
+        <Container sx={{ mt: 9, backgroundColor: '#eee', alignContent: 'center' }}>
             <Slider {...settings}>
                 {post.image_urls.map((v: string, k) => (
                     <Box
                      key={k}
-                    //  className='h-screen'
-                    //  sx={{ height: 400 }}
+                     sx={{ height: 'calc(100vh - 200px - 30px)' }}
                     >
                         <img
                           key={k}
@@ -36,6 +34,9 @@ export default function PostDetail({ post }: { post: PostInfo }) {
                           srcSet={v}
                           alt={k.toString()}
                           loading="lazy"
+                          height='100%'
+                          width='100%'
+                          style={{ objectFit: 'contain' }}
                         />
                     </Box>
                 ))}
