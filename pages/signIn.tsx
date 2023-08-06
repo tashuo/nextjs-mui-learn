@@ -20,6 +20,7 @@ export default function SignIn() {
   const router = useRouter();
   console.log(router.query);
   console.log(process.env);
+  console.log(process.env.NEXT_PUBLIC_API_HOST, process.env.GITHUB_CLIENT_ID);
   const code = router.query.code as string;
   const redirectUrl = encodeURIComponent(router.query.redirectUrl as string ?? '/');
   const githubRedirectUrl = encodeURIComponent(`${process.env.NEXT_PUBLIC_API_HOST}/signIn?redirectUrl=${redirectUrl}`);
