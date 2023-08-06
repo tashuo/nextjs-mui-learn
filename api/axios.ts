@@ -31,7 +31,7 @@ commonRequest.interceptors.response.use(function (response) {
     if (error.response?.status === 401) {
         clearClientLoginState();
         Router.push(`/signIn?redirectUrl=${encodeURIComponent(Router.asPath)}`);
+    } else {
+        return Promise.reject(error);
     }
-    
-    return Promise.reject(error);
 });

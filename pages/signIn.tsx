@@ -22,7 +22,7 @@ export default function SignIn() {
   const code = router.query.code as string;
   const redirectUrl = encodeURIComponent(router.query.redirectUrl as string ?? '/');
   const githubRedirectUrl = encodeURIComponent(`http://localhost:3000/signIn?redirectUrl=${redirectUrl}`);
-  const githubAuthUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=f3e116f0acc1830a0319&redirect_uri=${githubRedirectUrl}`;
+  const githubAuthUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${githubRedirectUrl}`;
   React.useEffect(() => {
       console.log(code);
       if (code) {
