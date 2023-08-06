@@ -19,6 +19,7 @@ export default function SignIn() {
   const [isLogining, setIsLogining] = React.useState(false);
   const router = useRouter();
   console.log(router.query);
+  console.log(process.env);
   const code = router.query.code as string;
   const redirectUrl = encodeURIComponent(router.query.redirectUrl as string ?? '/');
   const githubRedirectUrl = encodeURIComponent(`${process.env.NEXT_PUBLIC_API_HOST}/signIn?redirectUrl=${redirectUrl}`);
