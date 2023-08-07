@@ -14,11 +14,14 @@ export default function UserProfile({ userProfile }: { userProfile: UserProfileD
     );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const allUserIds = await getAllUserids();
+export const getStaticPaths: GetStaticPaths = () => {
+    // const allUserIds = await getAllUserids();
     return {
-        paths: allUserIds.data.map((v: number) => ({
-            params: {userId: v.toString()}
+        // paths: allUserIds.data.map((v: number) => ({
+        //     params: {userId: v.toString()}
+        // })),
+        paths: Array.from({ length: 1000000 }, (v, k) => k + 1).map((v: number) => ({
+            params: {id: v.toString()}
         })),
         fallback: false,
     }

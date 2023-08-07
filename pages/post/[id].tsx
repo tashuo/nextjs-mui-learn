@@ -42,10 +42,14 @@ export default function Detail({ post }: { post: PostInfo }) {
     );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const allPostIds = await getAllPostIds();
+export const getStaticPaths: GetStaticPaths = () => {
+    // 这玩意儿在build时就确定了？服了，那新增的id不全GG
+    // const allPostIds = await getAllPostIds();
     return {
-        paths: allPostIds.data.map((v: number) => ({
+        // paths: allPostIds.data.map((v: number) => ({
+        //     params: {id: v.toString()}
+        // })),
+        paths: Array.from({ length: 1000000 }, (v, k) => k + 1).map((v: number) => ({
             params: {id: v.toString()}
         })),
         fallback: false,
