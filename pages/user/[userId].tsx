@@ -16,9 +16,6 @@ export default function UserProfile({ userProfile }: { userProfile: UserProfileD
 
 export const getStaticPaths: GetStaticPaths = () => {
     // const allUserIds = await getAllUserids();
-    console.log(Array.from({ length: 10 }, (v, k) => k + 1).map((v: number) => ({
-        params: {id: v.toString()}
-    })));
     return {
         // paths: allUserIds.data.map((v: number) => ({
         //     params: {userId: v.toString()}
