@@ -20,7 +20,7 @@ export const getStaticPaths: GetStaticPaths = () => {
         // paths: allUserIds.data.map((v: number) => ({
         //     params: {userId: v.toString()}
         // })),
-        paths: Array.from({ length: 1000000 }, (v, k) => k + 1).map((v: number) => ({
+        paths: Array.from({ length: 1000 }, (v, k) => k + 1).map((v: number) => ({
             params: {userId: v.toString()}
         })),
         fallback: false,

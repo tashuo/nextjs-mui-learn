@@ -49,7 +49,7 @@ export const getStaticPaths: GetStaticPaths = () => {
         // paths: allPostIds.data.map((v: number) => ({
         //     params: {id: v.toString()}
         // })),
-        paths: Array.from({ length: 1000000 }, (v, k) => k + 1).map((v: number) => ({
+        paths: Array.from({ length: 1000 }, (v, k) => k + 1).map((v: number) => ({
             params: {id: v.toString()}
         })),
         fallback: false,
