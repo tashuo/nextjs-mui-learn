@@ -18,13 +18,10 @@ import { setCookie } from 'cookies-next';
 export default function SignIn() {
   const [isLogining, setIsLogining] = React.useState(false);
   const router = useRouter();
-  console.log(router.query);
-  console.log(process.env);
-  console.log(process.env.NEXT_PUBLIC_API_HOST, process.env.GITHUB_CLIENT_ID);
   const code = router.query.code as string;
   const redirectUrl = encodeURIComponent(router.query.redirectUrl as string ?? '/');
   const githubRedirectUrl = encodeURIComponent(`${process.env.NEXT_PUBLIC_API_HOST}/signIn?redirectUrl=${redirectUrl}`);
-  const githubAuthUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${githubRedirectUrl}`;
+  const githubAuthUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${githubRedirectUrl}`;
   React.useEffect(() => {
       console.log(code);
       if (code) {
