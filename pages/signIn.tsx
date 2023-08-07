@@ -20,7 +20,7 @@ export default function SignIn() {
   const router = useRouter();
   const code = router.query.code as string;
   const redirectUrl = encodeURIComponent(router.query.redirectUrl as string ?? '/');
-  const githubRedirectUrl = encodeURIComponent(`${process.env.NEXT_PUBLIC_API_HOST}/signIn?redirectUrl=${redirectUrl}`);
+  const githubRedirectUrl = encodeURIComponent(`${process.env.NEXT_PUBLIC_APP_URL}/signIn?redirectUrl=${redirectUrl}`);
   const githubAuthUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${githubRedirectUrl}`;
   React.useEffect(() => {
       console.log(code);
