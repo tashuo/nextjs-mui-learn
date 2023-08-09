@@ -4,34 +4,31 @@ import Profile from "../../src/Profile";
 import ProfileTabs from "../../src/ProfileTab";
 import { getAllUserids, getProfile } from "../../api/user";
 import { UserProfileData } from "../../lib/types";
+import { useRouter } from "next/router";
+import { useUser } from "../../lib/hooks";
+import { Backdrop, CircularProgress } from "@mui/material";
 
-export default function UserProfile({ userProfile }: { userProfile: UserProfileData }) {
+export default function UserProfile() {
+    const router = useRouter();
+    const userId = router.query.userId;
+
+    // todo 使用skeleton
+    const {data, error, isLoading} = useUser(parseInt(userId as string));
+    if (isLoading || error) {
+        console.log(error);
+        return (
+            <Backdrop
+              sx={{ color: '#ccc', backgroundColor: 'transparent', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={true}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+        );
+    }
     return (
         <Layout>
-            <Profile userProfile={userProfile}/>
-            <ProfileTabs userProfile={userProfile}/>
+            <Profile userProfile={data}/>
+            <ProfileTabs userProfile={data}/>
         </Layout>
     );
-}
-
-export const getStaticPaths: GetStaticPaths = () => {
-    // const allUserIds = await getAllUserids();
-    return {
-        // paths: allUserIds.data.map((v: number) => ({
-        //     params: {userId: v.toString()}
-        // })),
-        paths: Array.from({ length: 1000 }, (v, k) => k + 1).map((v: number) => ({
-            params: {userId: v.toString()}
-        })),
-        fallback: false,
-    }
-}
-
-export const getStaticProps: GetStaticProps = async ({params}) => {
-    const user = await getProfile(params?.userId as string)
-    return {
-        props: {
-            userProfile: user.data
-        },
-    }
 }

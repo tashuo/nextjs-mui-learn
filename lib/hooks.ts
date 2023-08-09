@@ -1,6 +1,9 @@
 import { isNil } from 'lodash';
 import * as React from 'react';
 import { io } from 'socket.io-client';
+import { commonRequest } from '../api/axios';
+import useSWR, { SWRHook, SWRResponse } from "swr";
+import { PostInfo, User } from './types';
 
 export const useInfiniteScroll = (scrollRef: React.MutableRefObject<any>, callback: Function, extraListeners = []) => {
     React.useEffect(() => {
@@ -71,4 +74,12 @@ export const useSocketIO = (messageCallbacks?: {
             }
         }
     }, []);
+}
+
+export const usePost = (id: number): SWRResponse<PostInfo> => {
+    return useSWR(`/post/${id}`, (api: string) => commonRequest.get(api).then((res) => res.data.data));
+}
+
+export const useUser = (id: number): SWRResponse<User> => {
+    return useSWR(`/user/profile/${id}`, (api: string) => commonRequest.get(api).then((res) => res.data.data));
 }

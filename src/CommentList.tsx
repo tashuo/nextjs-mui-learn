@@ -4,9 +4,21 @@ import * as React from "react";
 import { getComments } from "../api/comment";
 import { isNil, uniqBy } from "lodash";
 import { CommentNode } from "./CommentNode";
+import { useRouter } from "next/router";
+import { usePost } from "../lib/hooks";
 
 export default function CommentList({ post, replyFunc, newComment }: { post: PostInfo, replyFunc: Function, newComment?: CommentInfo | null }) {
     console.log(newComment);
+    const router = useRouter();
+    const postId = router.query.id;
+    const {data, error, isLoading} = usePost(parseInt(postId as string));
+    if (isLoading) {
+        return (
+            <Box>
+                loading
+            </Box>
+        );
+    }
     const [comments, setComments] = React.useState<CursorPaginationData<CommentInfo>>({
         items: new Array<CommentInfo>(),
         meta: {

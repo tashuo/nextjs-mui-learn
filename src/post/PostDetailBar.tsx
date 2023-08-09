@@ -11,7 +11,6 @@ export default function PostDetailBar({ post }: { post: PostInfo }) {
     const [isAuthor, setIsAuthor] = React.useState(true);
     const [isFollowing, setIsFollowing] = React.useState(false);
     const router = useRouter();
-
     React.useEffect(() => {
         const clientLoginUserId = getItemFromLocalStorage('userId');
         setIsAuthor(parseInt(clientLoginUserId) === post.user.id);
