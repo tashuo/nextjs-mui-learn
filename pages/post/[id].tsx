@@ -34,6 +34,7 @@ export default function Detail() {
             </Backdrop>
         );
     }
+    const post = data as PostInfo;
 
     const handleCommentPublish = (publishedComment: CommentInfo) => {
         console.log(publishedComment);
@@ -56,10 +57,10 @@ export default function Detail() {
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
                 <title>this is title</title>
             </Head>
-            <PostDetailBar post={data} />
-            <PostDetail post={data} />
-            <CommentList post={data} replyFunc={handleCommentClick} newComment={newComment} />
-            <PostDetailBottom post={data} replyComment={replyComment} publishFunc={handleCommentPublish} />
+            <PostDetailBar post={post} />
+            <PostDetail post={post} />
+            <CommentList post={post} replyFunc={handleCommentClick} newComment={newComment} />
+            <PostDetailBottom post={post} replyComment={replyComment} publishFunc={handleCommentPublish} />
         </Container>
     );
 }
