@@ -80,6 +80,6 @@ export const usePost = (id: number): SWRResponse<PostInfo> => {
     return useSWR(`/post/${id}`, (api: string) => commonRequest.get(api).then((res) => res.data.data));
 }
 
-export const useUser = (id: number): SWRResponse<UserProfileData> => {
-    return useSWR(`/user/profile/${id}`, (api: string) => commonRequest.get(api).then((res) => res.data.data));
+export const useUser = (id: number = 0): SWRResponse<UserProfileData> => {
+    return useSWR(`/user/profile${id ? `/${id}` : ''}`, (api: string) => commonRequest.get(api).then((res) => res.data.data));
 }
