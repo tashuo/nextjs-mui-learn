@@ -38,9 +38,10 @@ export const useSocketIO = (messageCallbacks?: {
         const token = localStorage.getItem('bearerToken');
         if (!isNil(token)) {
             try {
+                console.log(process.env.NEXT_PUBLIC_WEBSOCKET_HOST);
                 const socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_HOST as string, {
                     path: '/ws',
-                    autoConnect: false,
+                    autoConnect: true,
                     extraHeaders: {
                         Authorization: `Bearer ${token}`
                     },
