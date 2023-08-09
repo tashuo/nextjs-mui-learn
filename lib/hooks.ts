@@ -44,8 +44,8 @@ export const useSocketIO = (messageCallbacks?: {
                     extraHeaders: {
                         Authorization: `Bearer ${token}`
                     },
-                    transports: ['webscoket'],
-                    secure: true,
+                    // transports: ['webscoket'],
+                    // secure: true,
                 });
                 socket.on('connect', function () {
                     console.log('connect');
