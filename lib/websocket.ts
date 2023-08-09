@@ -14,7 +14,9 @@ export const wsConnect = (): Socket|null|undefined => {
                 autoConnect: true,
                 extraHeaders: {
                     Authorization: `Bearer ${token}`
-                }
+                },
+                transports: ['webscoket'],
+                secure: true,
             });
             socket.on('connect', function () {
                 console.log('connect');
