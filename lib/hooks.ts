@@ -62,7 +62,7 @@ export const useSocketIO = (messageCallbacks?: {
                   socket.emit('heartbeat', {
                       live: true
                   });
-                }, 6000) : null;
+                }, 3000) : null;
                 return () => {
                   socket?.disconnect();
                   heartbeatInterval && window.clearInterval(heartbeatInterval);
