@@ -95,7 +95,7 @@ export const BaseCommentNode = ({comment, handleClick, rootCommentId}: {comment:
                         marginY='auto'
                         overflow='inherit'
                     >
-                        {comment.mpath + '|' + comment.content}
+                        {comment.content}
                     </Typography>
                 </Box>
                 <Stack
