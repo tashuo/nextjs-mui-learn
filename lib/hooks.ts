@@ -39,10 +39,13 @@ export const useSocketIO = (messageCallbacks?: {
         if (!isNil(token)) {
             try {
                 const socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_HOST as string, {
-                    autoConnect: true,
+                    path: '/ws',
+                    autoConnect: false,
                     extraHeaders: {
                         Authorization: `Bearer ${token}`
-                    }
+                    },
+                    transports: ['webscoket'],
+                    secure: true,
                 });
                 socket.on('connect', function () {
                     console.log('connect');
