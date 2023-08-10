@@ -40,13 +40,10 @@ export const useSocketIO = (messageCallbacks?: {
             try {
                 console.log(process.env.NEXT_PUBLIC_WEBSOCKET_HOST);
                 const socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_HOST as string, {
-                    // path: '/ws',
                     autoConnect: true,
                     extraHeaders: {
                         Authorization: `Bearer ${token}`
                     },
-                    // transports: ['webscoket'],
-                    // secure: true,
                 });
                 socket.on('connect', function () {
                     console.log('connect');
@@ -66,7 +63,7 @@ export const useSocketIO = (messageCallbacks?: {
                   socket.emit('heartbeat', {
                       live: true
                   });
-                }, 3000) : null;
+                }, 30000) : null;
                 return () => {
                   socket?.disconnect();
                   heartbeatInterval && window.clearInterval(heartbeatInterval);
