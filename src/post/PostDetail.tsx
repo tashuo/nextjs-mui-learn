@@ -20,29 +20,74 @@ export default function PostDetail({ post }: { post: PostInfo }) {
         adaptiveHeight: true,
     };
     
-    const imageSlider = post.image_urls.length > 0 ?  (
-        <Container sx={{ mt: 9, backgroundColor: '#eee', alignContent: 'center' }}>
+    const imageSlider = post.image_urls.length > 0 ? (
+        <Container 
+            maxWidth="xl" 
+            sx={{ 
+                mt: { xs: 7, sm: 8, md: 9 },
+                backgroundColor: 'transparent',
+                p: { xs: 1, sm: 2 },
+                position: 'relative',
+                '& .slick-slide': {
+                    opacity: 0.5,
+                    transition: 'opacity 0.3s ease',
+                },
+                '& .slick-active': {
+                    opacity: 1,
+                },
+            }}
+        >
             <Slider {...settings}>
                 {post.image_urls.map((v: string, k) => (
                     <Box
-                     key={k}
-                     sx={{ height: 'calc(100vh - 200px - 30px)' }}
+                        key={k}
+                        sx={{ 
+                            height: {
+                                xs: 'calc(100vh - 300px)',
+                                sm: 'calc(100vh - 250px)',
+                                md: 'calc(100vh - 200px)'
+                            },
+                            transition: 'all 0.5s ease',
+                            position: 'relative',
+                            '&:hover': {
+                                transform: 'scale(1.02)',
+                            }
+                        }}
                     >
                         <img
-                          key={k}
-                          src={v}
-                          srcSet={v}
-                          alt={k.toString()}
-                          loading="lazy"
-                          height='100%'
-                          width='100%'
-                          style={{ objectFit: 'contain' }}
+                            key={k}
+                            src={v}
+                            srcSet={v}
+                            alt={k.toString()}
+                            loading="lazy"
+                            style={{ 
+                                height: '100%',
+                                width: '100%',
+                                objectFit: 'contain',
+                                borderRadius: '8px',
+                                transition: 'all 0.3s ease-in-out',
+                            }}
                         />
+                        <Typography
+                            sx={{
+                                position: 'absolute',
+                                bottom: 16,
+                                right: 16,
+                                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                                color: 'white',
+                                padding: '4px 12px',
+                                borderRadius: 1,
+                                fontSize: '0.875rem',
+                                backdropFilter: 'blur(4px)',
+                            }}
+                        >
+                            {`${k + 1} / ${post.image_urls.length}`}
+                        </Typography>
                     </Box>
                 ))}
             </Slider>
         </Container>
-    ) : '';
+    ) : null;
 
     return (
         <Box>

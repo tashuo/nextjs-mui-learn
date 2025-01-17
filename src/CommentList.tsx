@@ -124,10 +124,66 @@ export default function CommentList({ post, replyFunc, newComment }: { post: Pos
                 </Box>
                 {
                     comments.meta.hasMore
-                    ? (<Box className='flex justify-center py-5' ref={bottomRefreshRef}><CircularProgress /></Box>)
-                    : (<Box paddingY={5}>
-                        <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
-                      </Box>)
+                    ? (<Box 
+                        className='flex justify-center py-5' 
+                        ref={bottomRefreshRef}
+                    >
+                        <CircularProgress size={30}
+                            sx={{ color: 'primary.main' }}
+                        />
+                    </Box>)
+                    : (<Box 
+                        paddingY={3}
+                        sx={{
+                            animation: 'fadeIn 0.5s ease-in',
+                            '@keyframes fadeIn': {
+                                '0%': {
+                                    opacity: 0,
+                                    transform: 'translateY(20px)'
+                                },
+                                '100%': {
+                                    opacity: 1,
+                                    transform: 'translateY(0)'
+                                }
+                            }
+                        }}
+                    >
+                        <Divider>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 1,
+                                    px: 2,
+                                    py: 1,
+                                    borderRadius: 2,
+                                    backgroundColor: 'background.paper',
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                                    '&:hover': {
+                                        transform: 'scale(1.02)',
+                                        transition: 'transform 0.2s ease'
+                                    }
+                                }}
+                            >
+                                <Typography 
+                                    variant="caption" 
+                                    color="text.secondary"
+                                    sx={{ 
+                                        fontSize: { xs: 11, sm: 13 },
+                                        fontWeight: 500,
+                                        letterSpacing: 0.5,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1
+                                    }}
+                                >
+                                    <span role="img" aria-label="star" style={{ fontSize: '1.2em' }}>✨</span>
+                                    已经到底啦
+                                    <span role="img" aria-label="cute" style={{ fontSize: '1.2em' }}>(｡◕‿◕｡)</span>
+                                </Typography>
+                            </Box>
+                        </Divider>
+                    </Box>)
                 }
             </Box>
         </Box>

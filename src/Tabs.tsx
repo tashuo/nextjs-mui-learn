@@ -143,12 +143,70 @@ export default function LabTabs() {
   return (
     <Box sx={{ width: '100%', typography: 'body1', mt: 8 }}>
       <TabContext value={value}>
-        <Box sx={{ borderColor: 'divider', position: 'fixed', width: '100%', backgroundColor: '#fff', marginTop: -2, borderBottom: 1, borderBottomColor: '#e0e0e0', zIndex: 1 }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example" centered>
+        <Box sx={{ 
+          borderColor: 'divider', 
+          position: 'fixed', 
+          width: '100%', 
+          backdropFilter: 'blur(8px)',
+          backgroundColor: 'rgba(255, 255, 255, 0.85)',
+          marginTop: -2, 
+          borderBottom: 1, 
+          borderBottomColor: 'rgba(0, 0, 0, 0.08)', 
+          zIndex: 1,
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+          transition: 'all 0.3s ease'
+        }}>
+          <TabList 
+            onChange={handleChange} 
+            aria-label="content tabs" 
+            centered
+            sx={{
+              '& .MuiTab-root': {
+                fontSize: '1rem',
+                fontWeight: 500,
+                minWidth: 120,
+                transition: 'all 0.2s ease',
+                '&:hover': {
+                  color: 'primary.main',
+                  transform: 'translateY(-2px)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.02)'
+                },
+                '&.Mui-selected': {
+                  fontWeight: 600,
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: 0,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '30%',
+                    height: '3px',
+                    borderRadius: '3px 3px 0 0',
+                    backgroundColor: 'primary.main',
+                    transition: 'width 0.2s ease'
+                  }
+                }
+              },
+              '& .MuiTabs-indicator': {
+                display: 'none'  // 隐藏默认的指示器
+              }
+            }}
+          >
             <Tab label="Following" value="following" />
             <Tab label="Recommend" value="recommend" />
           </TabList>
-          { publishProcess === 1 && (<LinearProgress color="success" style={{ marginTop: '-2px' }} />)}
+          { publishProcess === 1 && (
+            <LinearProgress 
+              color="success" 
+              sx={{
+                marginTop: '-2px',
+                height: 2,
+                '& .MuiLinearProgress-bar': {
+                  backgroundImage: 'linear-gradient(to right, #4CAF50, #81C784)'
+                }
+              }} 
+            />
+          )}
         </Box>
         <PullToRefresh onRefresh={handlePullRefresh} className='mt-6' pullingContent=''>
           <TabPanel value="following">
@@ -183,8 +241,20 @@ export default function LabTabs() {
                   (<Box className='flex justify-center py-5'><CircularProgress /></Box>) 
                   : (<LinearProgress ref={bottomRefreshRef} />)
                   : (
-                    <Box paddingY={5}>
-                      <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
+                    <Box paddingY={8} className="flex flex-col items-center">
+                      <Divider 
+                        sx={{
+                          width: '80%',
+                          maxWidth: '600px',
+                          '&::before, &::after': {
+                            borderColor: 'rgba(0, 0, 0, 0.08)',
+                          }
+                        }}
+                      >
+                        <span className="px-4 text-sm text-gray-400 font-normal select-none">
+                          我也是有底线的 (｡･ω･｡)
+                        </span>
+                      </Divider>
                     </Box>
                   )
               }

@@ -11,6 +11,47 @@ import { uniqBy } from 'lodash';
 import { getNoticeSummary, getNotices, markNoticeRead } from '../api/notice';
 import Notification from './Notification';
 
+const StyledDivider = styled(Divider)(({ theme }) => ({
+  '&.MuiDivider-root': {
+    '&::before, &::after': {
+      borderColor: theme.palette.grey[200],
+    },
+    fontSize: '0.875rem',
+    color: theme.palette.grey[500],
+    margin: theme.spacing(3, 0),
+    textTransform: 'none',
+    letterSpacing: '0.5px',
+    '&:hover': {
+      color: theme.palette.grey[700],
+      transition: 'color 0.3s ease',
+    }
+  }
+}));
+
+const NoMoreContent = () => (
+  <Box 
+    paddingY={3} 
+    display="flex" 
+    flexDirection="column" 
+    alignItems="center"
+    gap={2}
+  >
+    <StyledDivider>
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: 1,
+        opacity: 0.8
+      }}>
+        <span className="material-icons" style={{ fontSize: '1rem' }}>
+          mood
+        </span>
+        到底啦
+      </Box>
+    </StyledDivider>
+  </Box>
+);
+
 export default function NotificationTabs() {
   const [value, setValue] = React.useState('like');
   const [unreadCount, setUnreadCount] = React.useState({
@@ -149,7 +190,7 @@ export default function NotificationTabs() {
             />
           </TabList>
         </Box>
-        <TabPanel value="like" sx={{ marginTop: 5 }}>
+        <TabPanel value="like" sx={{ marginTop: { xs: 4, sm: 5 } }}>
             <Box>
                 {
                     likes.items.map((v: Notice) => (<Notification key={v.id} notice={v} />))
@@ -160,14 +201,10 @@ export default function NotificationTabs() {
                 likes.meta.isLoading !== undefined ?
                 (<Box className='flex justify-center py-5'><CircularProgress /></Box>) 
                 : (<LinearProgress ref={bottomRefreshRef} />)
-                : (
-                  <Box paddingY={5}>
-                    <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
-                  </Box>
-                )
+                : <NoMoreContent />
             }
         </TabPanel>
-        <TabPanel value="comment" sx={{ marginTop: 5 }}>
+        <TabPanel value="comment" sx={{ marginTop: { xs: 4, sm: 5 } }}>
             <Box>
                 {
                     comments.items.map((v: Notice) => (<Notification key={v.id} notice={v} />))
@@ -178,14 +215,10 @@ export default function NotificationTabs() {
                 comments.meta.isLoading !== undefined ?
                 (<Box className='flex justify-center py-5'><CircularProgress /></Box>) 
                 : (<LinearProgress ref={bottomRefreshRef} />)
-                : (
-                  <Box paddingY={5}>
-                    <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
-                  </Box>
-                )
+                : <NoMoreContent />
             }
         </TabPanel>
-        <TabPanel value="follow" sx={{ marginTop: 5 }}>
+        <TabPanel value="follow" sx={{ marginTop: { xs: 4, sm: 5 } }}>
             <Box>
                 {
                     follows.items.map((v: Notice) => (<Notification key={v.id} notice={v} />))
@@ -196,11 +229,7 @@ export default function NotificationTabs() {
                 follows.meta.isLoading !== undefined ?
                 (<Box className='flex justify-center py-5'><CircularProgress /></Box>)
                 : (<LinearProgress ref={bottomRefreshRef} />) 
-                : (
-                  <Box paddingY={5}>
-                    <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
-                  </Box>
-                )
+                : <NoMoreContent />
             }
         </TabPanel>
       </TabContext>

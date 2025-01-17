@@ -120,23 +120,27 @@ export default function PrimarySearchAppBar() {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        {/* <HideOnScroll> */}
-          <AppBar position="fixed" color="inherit" className='shadow-none'>
-            <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
+        <AppBar position="fixed" color="inherit" className='shadow-none'>
+          <Toolbar>
             <Typography
               variant="h6"
               noWrap
-              component="div"
-              sx={{ display: { xs: 'none', sm: 'block' } }}
+              component={Link}
+              href="/"
+              sx={{ 
+                display: { xs: 'block', sm: 'block' },
+                fontWeight: 700,
+                background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                letterSpacing: '0.5px',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  transition: 'all 0.2s ease-in-out',
+                },
+              }}
             >
               Community
             </Typography>
@@ -166,10 +170,39 @@ export default function PrimarySearchAppBar() {
               >
                 <Avatar alt="Remy Sharp" src={avatar as string} />
               </IconButton>
-            </Box></div>) : (<div><Button component={Link} color="inherit" href={signInUrl}>Login</Button></div>)}
-            </Toolbar>
-          </AppBar>
-        {/* </HideOnScroll> */}
+            </Box></div>) : (
+              <Box sx={{ 
+                ml: { xs: 1, sm: 2 },
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <Button
+                  component={Link}
+                  href={signInUrl}
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                  sx={{
+                    borderRadius: '20px',
+                    textTransform: 'none',
+                    px: { xs: 2, sm: 3 },
+                    minWidth: { xs: '70px', sm: '80px' },
+                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                    height: { xs: '32px', sm: '36px' },
+                    whiteSpace: 'nowrap',
+                    '&:hover': {
+                      backgroundColor: 'primary.dark',
+                      transform: 'scale(1.05)',
+                      transition: 'all 0.2s ease-in-out',
+                    },
+                  }}
+                >
+                  登录
+                </Button>
+              </Box>
+            )}
+          </Toolbar>
+        </AppBar>
         {renderMobileMenu}
         {renderMenu}
       </Box>

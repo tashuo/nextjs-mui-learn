@@ -63,58 +63,157 @@ export default function PostDetailBottom({ post, replyComment, publishFunc }: { 
     }
 
     return (
-        <Box sx={{ width: '100%', position: 'fixed', bottom: 0, alignContent: 'center', backgroundColor: '#fff', zIndex: 1, borderTop: 1, borderTopColor: '#ddd' }}>
+        <Box 
+            sx={{ 
+                width: '100%', 
+                position: 'fixed', 
+                bottom: 0,
+                paddingBottom: { xs: 'env(safe-area-inset-bottom)', sm: 0 },
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.95) 100%)',
+                backdropFilter: 'blur(10px)',
+                borderTopLeftRadius: { xs: 0, sm: 16 },
+                borderTopRightRadius: { xs: 0, sm: 16 },
+                boxShadow: '0px -4px 20px rgba(0, 0, 0, 0.08)',
+                zIndex: 1,
+            }}
+        >
             <Stack
-                spacing={2}
+                spacing={1}
+                sx={{
+                    maxWidth: 'lg',
+                    margin: '0 auto',
+                    width: '100%',
+                    py: 1,
+                }}
             >
-                <Stack direction='row' sx={{ marginTop: 1, px: 2 }}>
-                    <div className='flex px-2'>
-                      <IconButton aria-label="add to favorites" onClick={handleLike}>
-                        {isLiked ? <FavoriteOutlined sx={{ color: pink[500] }} /> : <FavoriteBorder />}
-                      </IconButton>
-                      <Typography color="text.secondary" className='mx-auto my-auto'>{likeCount}</Typography>
-                    </div>
-                    <div className='flex px-2'>
-                      <IconButton aria-label="comment" onClick={commentButtonClick}>
-                        <ModeCommentOutlined />
-                      </IconButton>
-                      <Typography color="text.secondary" className='mx-auto my-auto'>{post.comment_count}</Typography>
-                    </div>
-                    <div className='flex px-2'>
-                      <IconButton aria-label="collect">
-                        <CollectionsBookmarkOutlined />
-                      </IconButton>
-                      <Typography color="text.secondary" className='mx-auto my-auto'>{post.collect_count}</Typography>
-                    </div>
-                </Stack>
-                <Box
-                    sx={{ px: 4, pb: 2 }}
+                <Stack 
+                    direction='row' 
+                    sx={{ 
+                        px: { xs: 2, sm: 4 },
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}
                 >
-                    <Paper
-                      component="form"
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                      className="focus:scale-110 duration-1000"
-                    >
-                      <IconButton sx={{ p: '10px' }} aria-label="menu">
-                        <Avatar src={avatar} alt={nickname} sx={{ width: 30, height: 30 }} />
-                      </IconButton>
-                      <InputBase
-                        sx={{ ml: 1, flex: 1 }}
-                        placeholder={currentReplyComment ? `回复 @${currentReplyComment.user.username}` : commentPlaceholder}
-                        inputProps={{ 'aria-label': commentPlaceholder }}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setShowCommentPost(e.target.value !== '')
-                        }}
-                        inputRef={commentRef}
-                      />
-                      {
-                          showCommentPost
-                          && (
-                            <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions" onClick={handleCommentPublish}>
-                                <Send />
+                    <Stack direction="row" spacing={2}>
+                        <div className='flex items-center gap-1 hover:bg-gray-100 px-2 py-1 rounded-full transition-all'>
+                            <IconButton 
+                                size="small"
+                                aria-label="like" 
+                                onClick={handleLike}
+                                sx={{
+                                    color: isLiked ? pink[500] : 'inherit',
+                                    transition: 'all 0.2s',
+                                }}
+                            >
+                                {isLiked ? <FavoriteOutlined /> : <FavoriteBorder />}
                             </IconButton>
-                          )
-                      }
+                            <Typography 
+                                variant="body2" 
+                                color="text.secondary"
+                                sx={{ minWidth: 20 }}
+                            >
+                                {likeCount}
+                            </Typography>
+                        </div>
+
+                        <div className='flex items-center gap-1 hover:bg-gray-100 px-2 py-1 rounded-full transition-all'>
+                            <IconButton
+                                size="small"
+                                aria-label="comment"
+                                onClick={commentButtonClick}
+                            >
+                                <ModeCommentOutlined />
+                            </IconButton>
+                            <Typography 
+                                variant="body2" 
+                                color="text.secondary"
+                                sx={{ minWidth: 20 }}
+                            >
+                                {post.comment_count}
+                            </Typography>
+                        </div>
+
+                        <div className='flex items-center gap-1 hover:bg-gray-100 px-2 py-1 rounded-full transition-all'>
+                            <IconButton
+                                size="small"
+                                aria-label="collect"
+                            >
+                                <CollectionsBookmarkOutlined />
+                            </IconButton>
+                            <Typography 
+                                variant="body2" 
+                                color="text.secondary"
+                                sx={{ minWidth: 20 }}
+                            >
+                                {post.collect_count}
+                            </Typography>
+                        </div>
+                    </Stack>
+                </Stack>
+
+                <Box sx={{ px: { xs: 2, sm: 4 } }}>
+                    <Paper
+                        component="form"
+                        sx={{ 
+                            display: 'flex', 
+                            alignItems: 'center',
+                            p: '4px 12px',
+                            borderRadius: '24px',
+                            backgroundColor: 'rgba(0, 0, 0, 0.02)',
+                            transition: 'all 0.3s',
+                            border: '1px solid transparent',
+                            '&:hover': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.03)',
+                            },
+                            '&:focus-within': {
+                                backgroundColor: '#fff',
+                                borderColor: (theme) => theme.palette.primary.main,
+                                boxShadow: '0 0 0 4px rgba(25, 118, 210, 0.1)',
+                            }
+                        }}
+                        elevation={0}
+                    >
+                        <Avatar 
+                            src={avatar} 
+                            alt={nickname} 
+                            sx={{ 
+                                width: 32, 
+                                height: 32,
+                                mr: 1,
+                            }} 
+                        />
+                        <InputBase
+                            sx={{ 
+                                flex: 1,
+                                fontSize: '0.95rem',
+                                '& input': {
+                                    padding: '8px 0',
+                                }
+                            }}
+                            placeholder={currentReplyComment ? `回复 @${currentReplyComment.user.username}` : commentPlaceholder}
+                            inputProps={{ 'aria-label': commentPlaceholder }}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                setShowCommentPost(e.target.value !== '')
+                            }}
+                            inputRef={commentRef}
+                        />
+                        {showCommentPost && (
+                            <IconButton 
+                                color="primary" 
+                                sx={{ 
+                                    ml: 1,
+                                    backgroundColor: (theme) => theme.palette.primary.main,
+                                    color: '#fff',
+                                    '&:hover': {
+                                        backgroundColor: (theme) => theme.palette.primary.dark,
+                                    }
+                                }} 
+                                size="small"
+                                onClick={handleCommentPublish}
+                            >
+                                <Send sx={{ fontSize: 18 }} />
+                            </IconButton>
+                        )}
                     </Paper>
                 </Box>
             </Stack>

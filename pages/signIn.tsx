@@ -11,9 +11,29 @@ import Copyright from '../src/Copyright';
 import { useRouter } from 'next/router';
 import { GitHub } from '@mui/icons-material';
 import { common } from '@mui/material/colors';
-import { CircularProgress } from '@mui/material';
+import { Card, CircularProgress, Link, Stack } from '@mui/material';
 import { getProfile, githubLogin } from '../api/user';
 import { setCookie } from 'cookies-next';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+const SignInContainer = styled(Stack)(({ theme }) => ({
+  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
+  minHeight: '100%',
+  padding: theme.spacing(2),
+  [theme.breakpoints.up('sm')]: {
+    padding: theme.spacing(4),
+  },
+  '&::before': {
+    content: '""',
+    display: 'block',
+    position: 'absolute',
+    zIndex: -1,
+    inset: 0,
+    backgroundImage:
+      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+    backgroundRepeat: 'no-repeat',
+  },
+}));
 
 export default function SignIn() {
   const [isLogining, setIsLogining] = React.useState(false);
@@ -50,45 +70,114 @@ export default function SignIn() {
   }, [router]);
 
   return (
-    <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
+    <Container component="main" maxWidth="xs" sx={{ 
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'relative',
+      pb: 8,
+      background: 'radial-gradient(ellipse at top, rgba(243, 246, 255, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%)',
+    }}>
+      <CssBaseline />
+      <Box sx={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        mt: -8,
+        gap: 3,
+      }}>
+        <Link
+          href="/"
           sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            textDecoration: 'none',
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
+              transform: 'translateY(-1px)',
+            }
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Welcome to Community
-          </Typography>
-          <Box
-            marginY={8}
-            padding={5}
+          <Typography 
+            variant="h4" 
+            sx={{ 
+              color: '#1a1a1a',
+              fontWeight: 600,
+              letterSpacing: '-0.02em',
+              fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+              textAlign: 'center',
+            }}
           >
-              {
-                  isLogining ?
-                  (
-                    <CircularProgress />
-                  ) :
-                  (
-                    <Button
-                      variant="contained"
-                      onClick={() => router.push(githubAuthUrl)}
-                      sx={{ backgroundColor: 'black!important' }}
-                    >
-                      <GitHub />
-                      login with github
-                    </Button>
-                  )
-              }
+            Community
+          </Typography>
+        </Link>
+        <Card 
+          variant="outlined" 
+          sx={{ 
+            width: '100%', 
+            p: 4,
+            borderRadius: 2,
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.05)',
+            border: '1px solid rgba(230, 235, 255, 0.6)',
+            backdropFilter: 'blur(8px)',
+            background: 'rgba(255, 255, 255, 0.8)',
+          }}
+        >
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: 3,
+            alignItems: 'center',
+            textAlign: 'center',
+          }}>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                color: 'text.secondary',
+                fontWeight: 400
+              }}
+            >
+              Join our developer community
+            </Typography>
+            {
+              isLogining ? (
+                <CircularProgress size={28} sx={{ color: 'primary.main' }} />
+              ) : (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={() => router.push(githubAuthUrl)}
+                  sx={{ 
+                    backgroundColor: 'black!important',
+                    py: 1.5,
+                    borderRadius: 1.5,
+                    textTransform: 'none',
+                    fontSize: '0.95rem',
+                    fontWeight: 500,
+                    '&:hover': {
+                      backgroundColor: '#333!important',
+                      transform: 'translateY(-1px)',
+                      transition: 'all 0.2s ease-in-out',
+                    }
+                  }}
+                >
+                  <GitHub sx={{ mr: 1 }} />
+                  Login with GitHub
+                </Button>
+              )
+            }
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        </Card>
+      </Box>
+      <Copyright sx={{ 
+        position: 'absolute',
+        bottom: 16,
+        left: 0,
+        right: 0,
+        textAlign: 'center',
+        opacity: 0.8
+      }} />
     </Container>
   );
 }

@@ -10,6 +10,38 @@ import { getCollectPosts, getLikePosts, getPosts } from '../api/post';
 import { Feed, PaginationData, UserProfileData } from '../lib/types';
 import { useInfiniteScroll } from '../lib/hooks';
 import { uniqBy } from 'lodash';
+import { keyframes } from '@mui/system';
+import { styled } from '@mui/material/styles';
+
+const fadeUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const AnimatedDivider = styled(Divider)({
+  animation: `${fadeUp} 0.8s ease-out forwards`,
+});
+
+const bounceKeyframes = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+`;
+
+const BounceSpan = styled('span')(({ delay = 0 }) => ({
+  display: 'inline-block',
+  animation: `${bounceKeyframes} 1s ease-in-out infinite`,
+  animationDelay: `${delay}s`,
+}));
 
 export default function ProfileTabs({ userProfile }: { userProfile: UserProfileData }) {
   const [value, setValue] = React.useState('user');
@@ -127,7 +159,14 @@ export default function ProfileTabs({ userProfile }: { userProfile: UserProfileD
                 : (<LinearProgress ref={bottomRefreshRef} />)
                 : (
                   <Box paddingY={5}>
-                    <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
+                    <AnimatedDivider className='font-thin text-sm'>
+                      <span className="inline-flex items-center gap-1">
+                        已经到底啦
+                        <BounceSpan>~</BounceSpan>
+                        <BounceSpan delay={0.1}>~</BounceSpan>
+                        <BounceSpan delay={0.2}>~</BounceSpan>
+                      </span>
+                    </AnimatedDivider>
                   </Box>
                 )
             }
@@ -145,7 +184,14 @@ export default function ProfileTabs({ userProfile }: { userProfile: UserProfileD
                 : (<LinearProgress ref={bottomRefreshRef} />) 
                 : (
                   <Box paddingY={5}>
-                    <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
+                    <AnimatedDivider className='font-thin text-sm'>
+                      <span className="inline-flex items-center gap-1">
+                        已经到底啦
+                        <BounceSpan>~</BounceSpan>
+                        <BounceSpan delay={0.1}>~</BounceSpan>
+                        <BounceSpan delay={0.2}>~</BounceSpan>
+                      </span>
+                    </AnimatedDivider>
                   </Box>
                 )
             }
@@ -163,7 +209,14 @@ export default function ProfileTabs({ userProfile }: { userProfile: UserProfileD
                 : (<LinearProgress ref={bottomRefreshRef} />) 
                 : (
                   <Box paddingY={5}>
-                    <Divider className='font-thin text-sm'>我也是有底线的xdddd</Divider>
+                    <AnimatedDivider className='font-thin text-sm'>
+                      <span className="inline-flex items-center gap-1">
+                        已经到底啦
+                        <BounceSpan>~</BounceSpan>
+                        <BounceSpan delay={0.1}>~</BounceSpan>
+                        <BounceSpan delay={0.2}>~</BounceSpan>
+                      </span>
+                    </AnimatedDivider>
                   </Box>
                 )
             }

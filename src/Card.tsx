@@ -81,17 +81,65 @@ export const FeedCard = ({ props, settingClick }: { props: Feed, settingClick: F
   }
 
   return (
-    <Card key={props.id} className='mb-2' onClick={handleCardClick}>
+    <Card 
+      key={props.id} 
+      className='mb-4 hover:shadow-lg transition-all duration-300 rounded-xl bg-white'
+      onClick={handleCardClick}
+      sx={{
+        '&:hover': {
+          transform: 'translateY(-2px)',
+        }
+      }}
+    >
       <CardHeader
+        className='px-4 py-3'
         avatar={props.user.avatar_url
-            ? <Avatar aria-label="recipe" alt={props.user.username} src={props.user.avatar_url} onClick={AvatarClick}></Avatar> 
-            : <Avatar sx={{ bgcolor: deepOrange[500] }} aria-label="recipe" onClick={AvatarClick}>{props.user.username.substring(props.user.username.length - 2)}</Avatar>
+            ? <Avatar 
+                aria-label="recipe" 
+                alt={props.user.username} 
+                src={props.user.avatar_url} 
+                onClick={AvatarClick}
+                className='cursor-pointer transform transition-all duration-200'
+                sx={{
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                    boxShadow: '0 3px 10px rgba(0,0,0,0.1)',
+                  }
+                }}
+              /> 
+            : <Avatar 
+                sx={{ 
+                  bgcolor: deepOrange[500],
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                    boxShadow: '0 3px 10px rgba(0,0,0,0.1)',
+                  }
+                }} 
+                aria-label="recipe" 
+                onClick={AvatarClick}
+                className='cursor-pointer transform transition-all duration-200'
+              >
+                {props.user.username.substring(props.user.username.length - 2)}
+              </Avatar>
         }
         action={
-          <div className='flex'>
-            <Typography className='mx-auto my-auto text-xs font-thin'>{props.created_at_friendly}</Typography>
-            <IconButton aria-label="settings" onClick={(e: React.MouseEvent<HTMLElement>) => { e.stopPropagation(); handleShowSetting(props.id)}}>
-              <MoreVertIcon/>
+          <div className='flex items-center'>
+            <Typography className='text-xs text-gray-500 mr-2'>{props.created_at_friendly}</Typography>
+            <IconButton 
+              aria-label="settings" 
+              className='transition-all duration-200'
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'rgba(0,0,0,0.04)',
+                  transform: 'rotate(90deg)',
+                }
+              }}
+              onClick={(e: React.MouseEvent<HTMLElement>) => { 
+                e.stopPropagation(); 
+                handleShowSetting(props.id)
+              }}
+            >
+              <MoreVertIcon className='text-gray-600'/>
             </IconButton>
           </div>
         }
@@ -109,24 +157,79 @@ export const FeedCard = ({ props, settingClick }: { props: Feed, settingClick: F
           {props.id}|{props.content}
         </Typography>
       </CardContent>}
-      <CardActions className='text-center'>
-        <div className='flex px-2'>
-          <IconButton aria-label="add to favorites" onClick={handleLike}>
-            {isLiked ? <FavoriteOutlined sx={{ color: pink[500] }} /> : <FavoriteBorder />}
-          </IconButton>
-          <Typography color="text.secondary" className='mx-auto my-auto'>{likeCount}</Typography>
-        </div>
-        <div className='flex px-2'>
-          <IconButton aria-label="comment">
-            <ModeCommentOutlined />
-          </IconButton>
-          <Typography color="text.secondary" className='mx-auto my-auto'>{props.comment_count}</Typography>
-        </div>
-        <div className='flex px-2'>
-          <IconButton aria-label="collect">
-            <CollectionsBookmarkOutlined />
-          </IconButton>
-          <Typography color="text.secondary" className='mx-auto my-auto'>{props.collect_count}</Typography>
+      <CardActions className='px-4 py-2 border-t border-gray-100'>
+        <div className='flex items-center justify-between w-full'>
+          <div className='flex items-center space-x-6'>
+            <div className='flex items-center group'>
+              <IconButton 
+                aria-label="add to favorites"
+                className='transition-all duration-200'
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'rgba(244,67,54,0.1)',
+                    transform: 'scale(1.1)',
+                  }
+                }}
+                onClick={handleLike}
+              >
+                {isLiked ? 
+                  <FavoriteOutlined 
+                    sx={{ 
+                      color: pink[500],
+                      animation: isLiked ? 'pulse 0.5s' : 'none',
+                      '@keyframes pulse': {
+                        '0%': { transform: 'scale(1)' },
+                        '50%': { transform: 'scale(1.2)' },
+                        '100%': { transform: 'scale(1)' },
+                      },
+                    }} 
+                  /> : 
+                  <FavoriteBorder 
+                    className='text-gray-600 group-hover:text-pink-500 transition-colors duration-200' 
+                  />
+                }
+              </IconButton>
+              <Typography className='ml-1 text-sm text-gray-600 group-hover:text-pink-500 transition-colors duration-200'>
+                {likeCount}
+              </Typography>
+            </div>
+
+            <div className='flex items-center group'>
+              <IconButton 
+                aria-label="comment"
+                className='transition-all duration-200'
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'rgba(33,150,243,0.1)',
+                    transform: 'scale(1.1)',
+                  }
+                }}
+              >
+                <ModeCommentOutlined className='text-gray-600 group-hover:text-blue-500 transition-colors duration-200' />
+              </IconButton>
+              <Typography className='ml-1 text-sm text-gray-600 group-hover:text-blue-500 transition-colors duration-200'>
+                {props.comment_count}
+              </Typography>
+            </div>
+
+            <div className='flex items-center group'>
+              <IconButton 
+                aria-label="collect"
+                className='transition-all duration-200'
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'rgba(255,193,7,0.1)',
+                    transform: 'scale(1.1)',
+                  }
+                }}
+              >
+                <CollectionsBookmarkOutlined className='text-gray-600 group-hover:text-yellow-500 transition-colors duration-200' />
+              </IconButton>
+              <Typography className='ml-1 text-sm text-gray-600 group-hover:text-yellow-500 transition-colors duration-200'>
+                {props.collect_count}
+              </Typography>
+            </div>
+          </div>
         </div>
       </CardActions>
     </Card>

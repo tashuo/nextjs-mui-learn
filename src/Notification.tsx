@@ -6,8 +6,8 @@ import { useRouter } from "next/router";
 export default function Notification({ notice }: { notice: Notice }) {
     const router = useRouter();
     const redirectToPost = () => {
+        if (notice.type === 'follow') return;
         router.push(`/post/${notice.post?.id}?redirectUrl=${encodeURIComponent(router.asPath)}`);
-        return;
     }
 
     let content = '';
@@ -37,50 +37,63 @@ export default function Notification({ notice }: { notice: Notice }) {
 
     return (
         <Stack
+            onClick={redirectToPost}
             direction='row'
             spacing={2}
             width='100%'
-            marginY={2}
+            marginY={1.5}
+            padding={2}
+            sx={{
+                borderRadius: 2,
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    cursor: notice.type === 'follow' ? 'default' : 'pointer',
+                },
+            }}
         >
-            <Avatar src={notice.operator.avatar_url} />
+            <Avatar 
+                src={notice.operator.avatar_url}
+                sx={{ 
+                    width: 48, 
+                    height: 48,
+                    border: '2px solid #f0f0f0' 
+                }}
+            />
             <Stack
                 direction='row'
                 justifyContent='space-between'
                 width='100%'
+                spacing={2}
             >
-                <Stack>
+                <Stack spacing={0.5}>
                     <Typography
                         component="div"
-                        fontSize={14}
-                        fontWeight={7}
-                        className="my-auto"
+                        fontSize={15}
+                        fontWeight={600}
+                        sx={{ color: '#1a1a1a' }}
                     >
                         {notice.operator.username}
                     </Typography>
                     <Typography
                         component='div'
                         fontSize={14}
-                        fontWeight={5}
+                        sx={{ 
+                            color: '#666',
+                            lineHeight: 1.5 
+                        }}
                         className="line-clamp-2"
                     >
                         {content}
                     </Typography>
+                    <Typography
+                        component='div'
+                        fontSize={12}
+                        sx={{ color: '#999' }}
+                    >
+                        {notice.created_at_friendly}
+                    </Typography>
                 </Stack>
-                {
-                    notice.type === 'follow'
-                    ? (
-                        <Typography
-                            component='div'
-                            marginY='auto'
-                        >
-                            {notice.created_at_friendly}
-                        </Typography>
-                    ) : (
-                        <Button onClick={redirectToPost}>
-                            查看
-                        </Button>
-                    )
-                }
             </Stack>
         </Stack>
     );

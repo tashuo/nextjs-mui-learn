@@ -50,17 +50,46 @@ export default function Detail() {
     return (
         <Container
             disableGutters
-            maxWidth={false}
+            maxWidth="lg"
             className="overflow-hidden"
+            sx={{
+                px: { xs: 0, sm: 2 },
+                maxWidth: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh',
+            }}
         >
             <Head>
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
-                <title>this is title</title>
+                <title>{post.title || '帖子详情'}</title>
             </Head>
-            <PostDetailBar post={post} />
-            <PostDetail post={post} />
-            <CommentList post={post} replyFunc={handleCommentClick} newComment={newComment} />
-            <PostDetailBottom post={post} replyComment={replyComment} publishFunc={handleCommentPublish} />
+            <Box sx={{ 
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: { xs: 1, sm: 2 },
+            }}>
+                <PostDetailBar post={post} />
+                <PostDetail post={post} />
+                <CommentList 
+                    post={post} 
+                    replyFunc={handleCommentClick} 
+                    newComment={newComment}
+                />
+                <PostDetailBottom 
+                    post={post} 
+                    replyComment={replyComment} 
+                    publishFunc={handleCommentPublish}
+                    sx={{ 
+                        position: 'sticky',
+                        bottom: 0,
+                        bgcolor: 'background.paper',
+                        borderTop: 1,
+                        borderColor: 'divider',
+                    }} 
+                />
+            </Box>
         </Container>
     );
 }
