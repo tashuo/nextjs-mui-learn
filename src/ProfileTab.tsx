@@ -37,10 +37,14 @@ const bounceKeyframes = keyframes`
   }
 `;
 
-const BounceSpan = styled('span')(({ delay = 0 }) => ({
-  display: 'inline-block',
-  animation: `${bounceKeyframes} 1s ease-in-out infinite`,
-  animationDelay: `${delay}s`,
+interface BounceSpanProps {
+    delay?: number;
+}
+
+const BounceSpan = styled('span')<BounceSpanProps>(({ delay = 0 }) => ({
+    display: 'inline-block',
+    animation: `${bounceKeyframes} 1s ease-in-out infinite`,
+    animationDelay: `${delay}s`,
 }));
 
 export default function ProfileTabs({ userProfile }: { userProfile: UserProfileData }) {
